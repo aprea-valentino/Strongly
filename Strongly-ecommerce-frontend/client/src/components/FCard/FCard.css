@@ -1,0 +1,40 @@
+.FCard {
+  background-color: #635f5f;
+  color: var(--text-primary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90vw; /* 90% del ancho de la ventana */
+  max-width: 1650px;
+  margin: 0 auto;
+  height: 440px; /* Dobla el alto aproximado */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* centra contenido verticalmente */
+  align-items: center;     /* 👈 centra el contenido horizontalmente */
+  text-align: center;      /* 👈 centra el texto dentro del contenido */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.FCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+}
+
+.FCard-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.FCard-description {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #ccc;
+}
+
+.FCard-price {
+  font-weight: 600;
+  color: #fff;
+}

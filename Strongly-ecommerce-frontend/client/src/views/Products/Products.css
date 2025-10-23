@@ -1,0 +1,52 @@
+.products-page-container {
+    display: flex; /* Usamos Flexbox para el layout de dos columnas */
+    /*max-width: 1200px; /* Limita el ancho del contenedor principal */
+    margin-top: 20px ; /* Centra el contenido */
+    gap: 30px; /* Espacio entre el sidebar y el contenido */
+    padding: 0 20px; /* Padding a los lados */
+    justify-content: flex-start;
+}
+
+/* 1. ESTILO DE LA BARRA LATERAL */
+.sidebar {
+    width: 250px; /* Ancho fijo para el sidebar */
+    padding: 20px;
+    background-color: #f8f8f8; /* Fondo blanco/gris muy claro */
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    height: fit-content; /* Para que el fondo no se extienda hasta abajo */
+}
+
+.sidebar h3 {
+    color: #08471f; /* Color del logo para el título */
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.filter-group {
+    margin-bottom: 20px;
+}
+
+.filter-group h4 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+/* 2. ESTILO DEL CONTENIDO PRINCIPAL */
+.products-main-content {
+    flex-grow: 1; /* Ocupa el resto del espacio disponible */
+}
+
+.products-main-content h2 {
+    color: #08471f;
+    margin-bottom: 20px;
+    text-align: left;
+}

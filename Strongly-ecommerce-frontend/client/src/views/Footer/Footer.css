@@ -1,0 +1,31 @@
+.footer {
+  background-color: #413b3b;
+  color: rgb(255, 254, 254);
+  padding: 2rem 1rem 1rem 1rem;
+  font-family: Arial, sans-serif;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+.footer-section h4 {
+  color: #22c55e;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-section p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.footer-bottom {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #ccc;
+}

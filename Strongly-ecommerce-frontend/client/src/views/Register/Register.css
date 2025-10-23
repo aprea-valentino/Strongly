@@ -1,0 +1,111 @@
+.register-page-container {
+    /* Centrar el contenido en el flujo normal de la página */
+    width: 100%;
+    min-height: 80vh; /* Asegura que ocupe gran parte de la pantalla */
+    
+    background-color: #686868; 
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    padding: 40px 0; /* Agregamos padding superior/inferior para mejor vista */
+    overflow: auto; 
+}
+
+.forms-wrapper {
+    /* ¡PROPIEDAD CLAVE QUE DEBE MANTENERSE! */
+    display: flex;
+    gap: 25px; /* Espacio entre los dos formularios */
+    max-width: 900px;
+    width: 90%;
+    padding: 20px;
+}
+
+.form-box {
+    flex: 1; /* Ambos formularios ocupan el mismo ancho */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    /* CAMBIO CLAVE: Volver a un color de fondo verde oscuro/gris azulado */
+    background-color: rgb(30, 43, 34); /* Verde Bosque Oscuro o #08471f (Logo Color) */
+}
+
+.form-box h2 {
+    color: #ffffff; /* Verde brillante para los títulos */
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+    border-bottom: 2px solid #2ecc71;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Campos de entrada */
+.input-group {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: none;
+    border-radius: 6px;
+    /* Fondo del input más claro que la caja, pero oscuro */
+    background-color: #ffffff; 
+    color: rgb(0, 0, 0);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+    color: #aeb6bf;
+}
+
+/* Enlace de contraseña olvidada */
+.forgot-password {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    text-align: center;
+}
+
+.forgot-password a {
+    color: #2ecc71;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* Botones de acción (Aceptar) */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px;
+}
+
+/* Estilo para el botón ACEPTAR de Registro */
+.btn-register-action {
+    /* CAMBIO: Color de botón primario (verde brillante) */
+    background-color: #2ecc71; 
+    color: white; /* Texto blanco en el botón de registro */
+}
+
+/* Estilo para el botón ACEPTAR de Login */
+.btn-login-action {
+    background-color: #2ecc71; /* Azul para el login (distinto del registro) */
+    color: white;
+}
+
+.btn-register-action:hover {
+    background-color: #18693a;
+}
+
+.btn-login-action:hover {
+    background-color: #18693a;
+}

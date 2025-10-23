@@ -1,0 +1,78 @@
+.sidebar {
+    /* Ancho fijo para el sidebar, ocupando aproximadamente 1/5 del espacio */
+    width: 200px; 
+    padding: 15px;
+    
+    /* Fondo limpio para la barra lateral */
+    background-color: #f8f8f8; 
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    height: fit-content; /* Para que la caja se ajuste al contenido */
+    text-align: left;
+}
+
+.sidebar h3 {
+    color: #08471f; 
+    margin-bottom: 15px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+/* ==================================== */
+/* 3. Estilos de los Grupos de Filtros */
+/* ==================================== */
+
+.filter-group {
+    margin-bottom: 25px;
+}
+
+.filter-group h4 {
+    color: #333; /* Color de texto estándar */
+    margin-bottom: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.filter-group hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+/* Estilos para las etiquetas y checkboxes/radios */
+.filter-group label {
+    display: flex; /* Asegura que el texto y el input estén alineados */
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: #555;
+    cursor: pointer;
+}
+
+.filter-group input[type="checkbox"],
+.filter-group input[type="radio"] {
+    margin-right: 10px;
+    /* Puedes aplicar un estilo personalizado a los colores del checkbox si lo deseas, 
+       pero esto varía según el navegador. */
+}
+
+.price-inputs {
+    display: flex; /* Asegura que los inputs estén uno al lado del otro */
+    justify-content: flex-start;
+    align-items: center;
+    gap: 5px; /* Aumentamos el espacio entre los inputs si es necesario */
+}
+
+.price-inputs input {
+    width: 80px; /* Ancho ajustado para que quepan ambos */
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    border-radius: 6px; /* CAMBIO: Bordes redondeados sutiles */
+    font-size: 0.9rem;
+    text-align: left; /* Alineamos el texto dentro del input a la izquierda */
+}
+
+.price-inputs span {
+    color: #555;
+    margin-right: 5px;
+}

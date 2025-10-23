@@ -1,0 +1,43 @@
+/* Estilos globales */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* ocupa toda la pantalla */
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+  color: white;
+  
+}
+
+/* Contenido principal */
+.content {
+  flex: 1; /* ocupa el espacio disponible entre navbar y footer */
+  padding: 0rem 1rem 2rem 1rem;
+  padding-top: 0px;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* Título del contenido */
+.content h2 {
+  color: #22c55e;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+/* Párrafo */
+.content p {
+  font-size: 1.25rem;
+  color: #ccc;
+  max-width: 600px;
+  line-height: 1.6;
+}

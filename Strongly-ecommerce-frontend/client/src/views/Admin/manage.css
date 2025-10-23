@@ -1,0 +1,115 @@
+.manage-products-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.manage-products-container h1 {
+    color: #08471f; /* Verde oscuro de tu marca */
+    text-align: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+}
+
+.inventory-info {
+    text-align: center;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.no-products {
+    text-align: center;
+    color: #888;
+    padding: 30px;
+}
+
+/* ------------------------------------------------ */
+/* ESTILOS DE LA LISTA DE PRODUCTOS */
+/* ------------------------------------------------ */
+
+.product-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.manage-product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+}
+
+.manage-product-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-details {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: 20px;
+}
+
+.product-name {
+    font-weight: 700;
+    color: #333;
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.product-category, .product-stock {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.product-pricing {
+    margin-right: 20px;
+}
+
+.product-price {
+    font-weight: 700;
+    color: #08471f; /* Verde oscuro */
+    font-size: 1.1rem;
+}
+
+/* ------------------------------------------------ */
+/* ESTILOS DE BOTONES DE ACCIÓN */
+/* ------------------------------------------------ */
+
+.product-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.product-actions button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: opacity 0.3s;
+}
+
+/* Botón Editar (Color primario de acción: Verde) */
+.btn-edit {
+    background-color: #2ecc71; /* Verde de acción */
+    color: #08471f; /* Texto oscuro */
+}
+
+/* Botón Eliminar (Color de peligro: Rojo) */
+.btn-delete {
+    background-color: #e74c3c; /* Rojo de peligro */
+    color: white;
+}
+
+.product-actions button:hover {
+    opacity: 0.8;
+}
