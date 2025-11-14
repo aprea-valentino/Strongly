@@ -10,22 +10,28 @@ export default function Home() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const cargarProductos = async () => {
       setCargando(true);
       setError(null);
-      try {
-        const data = await productsService.getAllProducts();
-        setProductos(data);
-      } catch (err) {
-        console.error("Error al cargar productos:", err);
-        setError("No se pudieron cargar los productos");
-      } finally {
-        setCargando(false);
-      }
-    };
+      productsService.getAllProducts()
+        .then(data => {
+          setProductos(data);
+          setError(null); // Asegurar que se limpia cualquier error anterior
+        })
 
-    cargarProductos();
-  }, []);
+        .catch(err => {
+                console.error("Error al cargar productos:", err);
+                setError("No se pudieron cargar los productos");
+              })
+
+        .finally(() => {
+          setCargando(false);
+        });
+
+      
+    }, []);
+
+    
+  
 
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
