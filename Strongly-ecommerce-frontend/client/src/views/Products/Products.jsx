@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import ListCards from "../../components/ListCards/ListCards";
 import Sidebar from "../Sidebar/Sidebar.jsx";
 import "./Products.css";
 import { productsService } from "../../services/productsService"; 
+import { useDispatch, useSelector } from "react-redux"; 
+import { fetchProducts } from "../../redux/productsSlice";
 
 export default function Products() {
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const {items, loading, error} = useSelector((state) => state.products);
+
+  useEffect(() => {
+    dispatch(fetchProducts()  );
+  }, [dispatch]);
+  if (loading) return <p>Cargando publicaciones... </p>;
+  if (error) return <p>Error al cargar las publicaciones: {error}</p>;
+  
+
+
+  
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOrder, setSortOrder] = useState(null);
 
-  // 🔹 Cargar todos los productos
-  const cargarTodosLosProductos = async () => {
+  // Cargar todos los productos
+  /*const cargarTodosLosProductos = async () => {
     setCargando(true);
     setError(null);
     try {
@@ -25,13 +36,11 @@ export default function Products() {
       setCargando(false);
     }
   };
+*/
+  
 
-  useEffect(() => {
-    cargarTodosLosProductos();
-  }, []);
-
-  // 🔹 Manejar selección/deselección de categorías
-  const handleCategorySelect = async (categoryId, checked) => {
+  // Manejar selección/deselección de categorías
+  /*const handleCategorySelect = async (categoryId, checked) => {
     setCargando(true);
     setError(null);
 
@@ -64,8 +73,9 @@ export default function Products() {
       setCargando(false);
     }
   };
+*/
 
-  // 🔹 Manejo del ordenamiento
+  // Manejo del ordenamiento
   const handleSortChange = (order) => {
     setSortOrder(order);
     const sorted = [...productos];
