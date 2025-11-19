@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { productsService } from '../services/productsService';
 
-const URL = 'http://localhost:3001/product'; //VERIFICAR URL
+const URL = 'http://localhost:3001/products'; //VERIFICAR URL
 
 export const fetchProducts = createAsyncThunk(
-    'product/fetchProducts',
+    'products/fetchProducts',
 
     async () => {
       const {data} = await productsService.getAllProducts();
@@ -13,7 +13,7 @@ export const fetchProducts = createAsyncThunk(
 );
 
 export const createProduct = createAsyncThunk(
-  "/product",
+  "/products",
   async (newProduct) => {
     const { data } = await productsService.createProduct(newProduct);
     return data;
@@ -21,7 +21,7 @@ export const createProduct = createAsyncThunk(
 );
 
 export const updateProduct = createAsyncThunk(
-  "product/updateProduct",
+  "products/updateProduct",
   async (updatedProduct) => {
     const { id, precio} = updatedProduct;
     const newPrice = precio;
