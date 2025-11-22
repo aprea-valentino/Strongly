@@ -14,20 +14,29 @@
     width: 100%;
     max-width: 1200px; 
     gap: 40px; 
+   
+    align-items: flex-start;
 }
 
 /* Estilo para la sección de la imagen */
 .product-image-section {
-    width: 40%; 
-    /* Aquí irían estilos específicos para el contenedor de la imagen */
+    width: 65%; 
+    background-color: #e0e0e0;
+    border-radius: 12px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px; /* Asegura una altura mínima visible */
 }
 
 /* .product-card - Ahora es la tarjeta de información a la derecha */
 .product-card {
-    background: #ffffff; /* Fondo BLANCO para la tarjeta de info */
+    background: #ffffff; 
     border-radius: 12px;
-    padding: 30px;
-    width: 60%; 
+    padding: 0px;
+    width: 100%; 
+    text-align: left;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
