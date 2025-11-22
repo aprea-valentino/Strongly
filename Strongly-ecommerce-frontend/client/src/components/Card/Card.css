@@ -4,33 +4,34 @@
   padding: 1.5rem;
   border-radius: 12px;
   width: 220px;
-  height: 440px; /* Dobla el alto aproximado */
+  height: 440px; 
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centra contenido verticalmente */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  justify-content: flex-end; /* 👈 CAMBIO CLAVE: Alinea el contenido (Nombre y Precio) a la parte inferior. */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-align: center; /* Asegura que el texto que queda se centre horizontalmente */
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.7);
 }
 
 .card-title {
   font-size: 1.2rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-top: 5px; /* Pequeño espacio sobre el título */
+  margin-bottom: 5px; /* Reduce el margen inferior */
   color: var(--primary-color);
 }
 
 .card-description {
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  color: #ccc;
+  display: none; /* 👈 CAMBIO CLAVE: Oculta la descripción del producto en la vista de lista. */
 }
 
 .card-price {
   font-weight: 600;
   color: #fff;
+  margin-bottom: 10px; /* Espacio para separar del borde inferior de la tarjeta */
 }

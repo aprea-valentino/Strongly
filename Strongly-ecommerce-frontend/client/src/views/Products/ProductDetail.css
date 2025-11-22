@@ -1,57 +1,75 @@
 .product-detail-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 70vh;
-  background-color: #2b2b2b;
-  color: #fff;
+    display: flex;
+    justify-content: center; 
+    align-items: flex-start; /* Alineación superior para el wrapper de contenido */
+    min-height: 70vh;
+    padding: 50px 20px; 
+    background-color: #f0f0f0; /* Color de fondo CLARO para la página */
+    color: #333; 
 }
 
+/* Contenedor Flex para la estructura de dos columnas: Imagen (Izquierda) e Info (Derecha) */
+.detail-content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px; 
+    gap: 40px; 
+}
+
+/* Estilo para la sección de la imagen */
+.product-image-section {
+    width: 40%; 
+    /* Aquí irían estilos específicos para el contenedor de la imagen */
+}
+
+/* .product-card - Ahora es la tarjeta de información a la derecha */
 .product-card {
-  background: #1e1e1e;
-  border-radius: 12px;
-  padding: 30px;
-  width: 500px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    background: #ffffff; /* Fondo BLANCO para la tarjeta de info */
+    border-radius: 12px;
+    padding: 30px;
+    width: 60%; 
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Estilos de texto alineados a la izquierda */
 .product-info h2 {
-  color: #32cd32;
-  margin-bottom: 10px;
-  text-align: center;
+    color: #08471f; 
+    margin-bottom: 10px;
+    text-align: left; 
 }
 
 .product-info .description {
-  margin: 10px 0;
-  font-size: 15px;
-  color: #ccc;
-  text-align: center;
+    margin: 10px 0;
+    font-size: 1rem;
+    color: #555;
+    text-align: left; 
 }
 
 .product-info h3 {
-  text-align: center;
-  margin: 15px 0;
+    text-align: left; 
+    margin: 15px 0;
+    font-size: 1.5rem;
 }
 
 .add-btn {
-  width: 100%;
-  background: #00b140;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  padding: 12px;
-  margin-top: 15px;
-  cursor: pointer;
-  transition: background 0.2s;
+    width: 100%;
+    background: #00b140;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .add-btn:hover {
-  background: #008f36;
+    background: #008f36;
 }
 
 .error {
-  color: red;
-  text-align: center;
-  margin-top: 50px;
+    color: red;
+    text-align: left; /* Alineado a la izquierda si está en la columna de la derecha */
+    margin-top: 50px;
 }
