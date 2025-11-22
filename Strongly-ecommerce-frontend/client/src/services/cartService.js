@@ -1,6 +1,7 @@
 // src/services/cartService.js
 
-const API_URL = "/cart"; // ✅ si usás proxy en vite.config.js
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const API_URL = `${API_BASE}/cart`;
 
 // 🔹 Obtener carrito del usuario logueado
 

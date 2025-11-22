@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./PaginaDescuentos.css";
 import { useNavigate } from "react-router-dom";
+import { productsService } from "../../services/productsService";
 
 export default function PaginaDescuentos() {
   const [products, setProducts] = useState([]);
@@ -10,9 +11,7 @@ export default function PaginaDescuentos() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("/product"); // Ajusta si tu endpoint tiene prefijo (ej. /api/product)
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
+        const data = await productsService.getAllProducts();
         setProducts(data);
       } catch (err) {
         console.error("Error al cargar productos:", err);

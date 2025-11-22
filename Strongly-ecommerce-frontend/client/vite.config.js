@@ -6,32 +6,18 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      // Todo lo que empiece con /api/v1 va al backend
+      // Auth mantiene su prefijo API v1
       '/api/v1/auth': {
         target: 'http://localhost:4002',
         changeOrigin: true,
         secure: false,
       },
-      // Todo lo que empiece con /product, /cart, /categories, etc. también
-      '/product': {
+      // Proxy sólo para `/api` en desarrollo. Evita proxear rutas SPA como /product o /products.
+      '/api': {
         target: 'http://localhost:4002',
         changeOrigin: true,
         secure: false,
-      },
-      '/cart': {
-        target: 'http://localhost:4002',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/categories': {
-        target: 'http://localhost:4002',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/orders': {
-        target: 'http://localhost:4002',
-        changeOrigin: true,
-        secure: false,
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

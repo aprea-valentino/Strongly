@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { addItemToCart } from "../../services/cartService";
+import { productsService } from "../../services/productsService";
 import "./ProductDetail.css"; // 👈 asegurate de tener este CSS
 
 export default function ProductDetail() {
@@ -12,9 +13,7 @@ export default function ProductDetail() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`/product/${id}`);
-        if (!res.ok) throw new Error(`Error ${res.status}`);
-        const data = await res.json();
+        const data = await productsService.getProductById(id);
         setProduct(data);
       } catch (err) {
         console.error(err);

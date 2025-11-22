@@ -1,21 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { productsService } from '../services/productsService';
 
-const URL = 'http://localhost:3001/products'; //VERIFICAR URL
-
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
 
     async () => {
-      const {data} = await productsService.getAllProducts();
-      return data; // Esto se convierte en action.payload si tiene éxito (fulfilled)
+  const data = await productsService.getAllProducts();
+  return data; // Esto se convierte en action.payload si tiene éxito (fulfilled)
       }
 );
 
 export const createProduct = createAsyncThunk(
   "/products",
   async (newProduct) => {
-    const { data } = await productsService.createProduct(newProduct);
+    const data = await productsService.createProduct(newProduct);
     return data;
   }
 );

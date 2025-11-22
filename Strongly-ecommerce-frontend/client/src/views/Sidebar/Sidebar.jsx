@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./Sidebar.css";
+import { categoryService } from "../../services/categoryService";
 
 export default function Sidebar({ onCategorySelect, onSortChange }) {
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-    fetch("/categories")
-      .then((res) => res.json())
-      .then((data) => setCategories(data))
-      .catch((err) => console.error("Error al cargar categorías:", err));
+    const load = async () => {
+      try {
+        const data = await categoryService.getAllCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error("Error al cargar categorías:", err);
+      }
+    };
+    load();
   }, []);
 
   return (

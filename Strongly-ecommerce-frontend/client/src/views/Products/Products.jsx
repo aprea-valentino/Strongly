@@ -1,105 +1,52 @@
-import React, { use, useEffect, useState } from "react";
-import ListCards from "../../components/ListCards/ListCards";
+import React, { useEffect, useState } from "react";
+import ListCards from "../../components/ListCards/ListCards.jsx";
 import Sidebar from "../Sidebar/Sidebar.jsx";
 import "./Products.css";
-import { productsService } from "../../services/productsService"; 
-import { useDispatch, useSelector } from "react-redux"; 
-import { fetchProducts } from "../../redux/productsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../../redux/productsSlice.js";
 
 export default function Products() {
   const dispatch = useDispatch();
-  const {items, loading, error} = useSelector((state) => state.products);
+  const { items = [], loading, error } = useSelector((state) => state.products || {});
 
-  useEffect(() => {
-    dispatch(fetchProducts()  );
-  }, [dispatch]);
-  if (loading) return <p>Cargando publicaciones... </p>;
-  if (error) return <p>Error al cargar las publicaciones: {error}</p>;
-  
-
-
-  
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOrder, setSortOrder] = useState(null);
 
-  // Cargar todos los productos
-  /*const cargarTodosLosProductos = async () => {
-    setCargando(true);
-    setError(null);
-    try {
-      const data = await productsService.getAllProducts();
-      setProductos(data);
-    } catch (err) {
-      console.error("Error al cargar productos:", err);
-      setError("No se pudieron cargar los productos");
-    } finally {
-      setCargando(false);
-    }
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const handleCategorySelect = (categoryId, checked) => {
+    setSelectedCategories((prev) => {
+      if (checked) return [...prev, categoryId];
+      return prev.filter((id) => id !== categoryId);
+    });
   };
-*/
-  
 
-  // Manejar selección/deselección de categorías
-  /*const handleCategorySelect = async (categoryId, checked) => {
-    setCargando(true);
-    setError(null);
-
-    const updatedCategories = checked
-      ? [...selectedCategories, categoryId]
-      : selectedCategories.filter((id) => id !== categoryId);
-
-    setSelectedCategories(updatedCategories);
-
-    if (updatedCategories.length === 0) {
-      await cargarTodosLosProductos();
-      return;
-    }
-
-    try {
-      const responses = await Promise.all(
-        updatedCategories.map((id) =>
-          productsService.getProductsByCategory(id)
-        )
-      );
-      const allProducts = responses.flat();
-      const uniqueProducts = allProducts.filter(
-        (p, index, self) => index === self.findIndex((x) => x.id === p.id)
-      );
-      setProductos(uniqueProducts);
-    } catch (err) {
-      console.error("Error al filtrar productos:", err);
-      setError("No se pudieron cargar los productos filtrados");
-    } finally {
-      setCargando(false);
-    }
-  };
-*/
-
-  // Manejo del ordenamiento
   const handleSortChange = (order) => {
     setSortOrder(order);
-    const sorted = [...productos];
-    if (order === "asc") sorted.sort((a, b) => a.price - b.price);
-    if (order === "desc") sorted.sort((a, b) => b.price - a.price);
-    setProductos(sorted);
   };
+
+  const filtered = items.filter((p) => {
+    if ((p.stock ?? 0) <= 0) return false;
+    if (selectedCategories.length === 0) return true;
+    return selectedCategories.includes(p.categoryId) || selectedCategories.includes(p.category);
+  });
+
+  const finalProducts = [...filtered];
+  if (sortOrder === "asc") finalProducts.sort((a, b) => a.price - b.price);
+  if (sortOrder === "desc") finalProducts.sort((a, b) => b.price - a.price);
 
   return (
     <div className="products-page-container">
-      <Sidebar
-        onCategorySelect={handleCategorySelect}
-        onSortChange={handleSortChange}
-      />
+      <Sidebar onCategorySelect={handleCategorySelect} onSortChange={handleSortChange} />
       <div className="products-main-content">
         <h2>Productos disponibles</h2>
 
-        {cargando && <p>Cargando...</p>}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading && <p>Cargando publicaciones... </p>}
+        {error && <p style={{ color: "red" }}>Error al cargar las publicaciones: {error}</p>}
 
-        {!cargando && !error && (
-          // Pasamos solo productos con stock positivo
-          <ListCards productos={productos.filter(p => (p.stock ?? 0) > 0)} />
-        )}
+        {!loading && !error && <ListCards productos={finalProducts} />}
       </div>
     </div>
   );

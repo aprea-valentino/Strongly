@@ -1,6 +1,7 @@
 // src/services/categoryService.js
 
-const API_URL ="/categories";
+const API_BASE = import.meta.env.VITE_API_BASE || '/api';
+const API_URL = `${API_BASE}/categories`;
 
 export const categoryService = {
   // 🔹 Traer todas las categorías
