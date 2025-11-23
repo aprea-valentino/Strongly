@@ -44,21 +44,31 @@ export const categoryService = {
 
   // 🔹 Crear categoría
   createCategory: async (categoryData) => {
-    // categoryData = { name, description, parent_id }
-    try {
-      const res = await fetch(`${API_URL}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(categoryData),
-      });
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText);
-      }
-      return await res.json();
-    } catch (err) {
-      console.error("categoryService.createCategory:", err);
-      throw err;
+
+    
+        const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+
+    const res = await fetch(`${API_URL}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json",
+         Authorization: `Bearer ${token}`
+       },
+      body: JSON.stringify(categoryData),
+      
+    });
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
     }
+    return await res.json();
+  } catch (err) {
+      console.error("categoryService.createCategory:", err);
+    throw err;
+  }
+
+ 
   },
 };

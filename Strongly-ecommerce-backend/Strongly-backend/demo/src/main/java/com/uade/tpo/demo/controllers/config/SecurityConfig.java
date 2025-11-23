@@ -44,6 +44,8 @@ public class SecurityConfig {
             .requestMatchers("/orders/**").hasAuthority(Role.BUYER.name()) // órdenes
             .requestMatchers("/users/profile/**").hasAuthority(Role.BUYER.name()) // perfil
             // Endpoints solo para vendedores/admin
+            .requestMatchers(HttpMethod.POST,"/categories/**").hasAnyAuthority(Role.SELLER.name(), Role.ADMIN.name()) // crear productos
+
             .requestMatchers(HttpMethod.POST,"/product/**").hasAnyAuthority(Role.SELLER.name(), Role.ADMIN.name()) // crear productos
             .requestMatchers(HttpMethod.PUT,"/product/**").hasAnyAuthority(Role.SELLER.name(), Role.ADMIN.name()) // actualizar productos                                
             .requestMatchers("/inventory/**").hasAnyAuthority(Role.SELLER.name(), Role.ADMIN.name()) // inventario

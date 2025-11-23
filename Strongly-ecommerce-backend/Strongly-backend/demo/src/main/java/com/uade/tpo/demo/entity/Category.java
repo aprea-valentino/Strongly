@@ -29,6 +29,6 @@ public class Category {
     // 1 categoría → muchos productos (lado inverso)
     @OneToMany(mappedBy = "category")
     @ToString.Exclude
-    @JsonIgnore               // 👈 evita recursion al serializar Category
+    @JsonIgnore               //  evita recursion al serializar Category
     private List<Product> products;
 }
