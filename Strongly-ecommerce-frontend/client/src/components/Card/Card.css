@@ -7,7 +7,7 @@
   height: 440px; 
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* 👈 CAMBIO CLAVE: Alinea el contenido (Nombre y Precio) a la parte inferior. */
+  justify-content: flex-end; /* CAMBIO CLAVE: Alinea el contenido (Nombre y Precio) a la parte inferior. */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-align: center; /* Asegura que el texto que queda se centre horizontalmente */
@@ -27,7 +27,7 @@
 }
 
 .card-description {
-  display: none; /* 👈 CAMBIO CLAVE: Oculta la descripción del producto en la vista de lista. */
+  display: none; /*  CAMBIO CLAVE: Oculta la descripción del producto en la vista de lista. */
 }
 
 .card-price {
