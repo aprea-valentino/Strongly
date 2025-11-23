@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { productsService } from "../../services/productsService"; 
-import { categoryService } from '../../services/categoryService';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "../../redux/CategoriesSlice";
+import NuevaCategory from "./NuevaCategory";
 
 import './AddProduct.css';
 
@@ -18,72 +20,54 @@ export default function AddProduct() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [formData, setFormData] = useState(defaultFormData);
-  const [categories, setCategories] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const productIdToEdit = searchParams.get('edit');
 
-  
-/* useEffect(() => {
-  const cargarCategorias = async () => {
+  const dispatch = useDispatch();
+const { items: categories } = useSelector((state) => state.categories);
+
+const [showModal, setShowModal] = useState(false);
+const [newCategoryName, setNewCategoryName] = useState("");
+
+useEffect(() => {
+  // Cargar categorías desde Redux (una sola vez)
+  dispatch(fetchCategories());
+
+  // Si es edición, cargar datos del producto
+  const cargarProducto = async () => {
+    if (!productIdToEdit) return;
+
+    setLoading(true);
     try {
-      const cats = await categoryService.getAllCategories();
-      setCategories(cats);
+      const product = await productsService.getProductById(parseInt(productIdToEdit));
+      if (!product) {
+        console.error('Producto no encontrado');
+        navigate('/admin');
+        return;
+      }
+
+      setIsEditing(true);
+      setFormData({
+        title: product.title,
+        description: product.description,
+        price: parseFloat(product.price),
+        stock: parseInt(product.stock),
+        categoryId: parseInt(product.categoryId),
+        imageFile: null
+      });
+
     } catch (err) {
-      console.error("Error al cargar categorías:", err);
+      console.error('Error al cargar producto:', err);
+      navigate('/admin');
+    } finally {
+      setLoading(false);
     }
   };
-  cargarCategorias();
-}, []); */
 
-  useEffect(() => {
-    // 🔹 Cargar categorías
-    const cargarCategorias = async () => {
-      try {
-        const cats = await categoryService.getAllCategories();
-        setCategories(cats);
-      } catch (err) {
-        console.error('Error al cargar categorías:', err);
-      }
-    };
-
-    cargarCategorias();
-
-    // 🔹 Si es edición, cargar datos del producto
-    const cargarProducto = async () => {
-      if (!productIdToEdit) return;
-
-      setLoading(true);
-      try {
-        const product = await productsService.getProductById(parseInt(productIdToEdit));
-        if (!product) {
-          console.error('Producto no encontrado');
-          navigate('/admin');
-          return;
-        }
-
-        setIsEditing(true);
-        setFormData({
-            name: product.title,
-  description: product.description,
-  price: parseFloat(product.price),
-  stock: parseInt(product.stock),
-  id_category: parseInt(product.categoryId),
-  id_user:   parseInt(product.getItem("id")),        // 🔹 reemplazar con el ID real del usuario logueado
-  is_active: true    // opcional, si querés crear el producto activo por defecto
-        
-        });
-      } catch (err) {
-        console.error('Error al cargar producto:', err);
-        navigate('/admin');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    cargarProducto();
-  }, [productIdToEdit, navigate]);
+  cargarProducto();
+}, [productIdToEdit, navigate, dispatch]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -159,6 +143,10 @@ export default function AddProduct() {
 
         <div className="form-group">
           <label htmlFor="categoryId">Categoría:</label>
+          <button onClick={() => setShowModal(true)}>Nueva Categoría</button>
+        {showModal && (
+          <NuevaCategory onClose={() => setShowModal(false)} />
+        )}
             <select
             id="categoryId"
             name="categoryId"
