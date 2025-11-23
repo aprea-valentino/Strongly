@@ -141,7 +141,7 @@ public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest req)
 
     var saved = productRepository.save(p);
 
-    // Devolver solo datos esenciales + email del creador
+    // Devolver solo datos esenciales + email del creador (SERIA MEJOR DEJAR ESTO EN FORMATO DTO)
     ProductResponseSimple response = new ProductResponseSimple(
         saved.getId(),
         saved.getName(),
