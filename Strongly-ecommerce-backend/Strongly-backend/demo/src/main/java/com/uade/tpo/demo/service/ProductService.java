@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
+import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
@@ -25,7 +26,11 @@ public interface ProductService {
     ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user)
             throws ProductDuplicateException, CategoryNotFoundException;
 
+    /* 
     ProductResponse updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException;
 
     ProductResponse updateStock(Long productId, int newStock) throws ProductNotFoundException;
+    */
+
+    ProductResponse updateProduct(UpdateProductRequest request) throws ProductNotFoundException;
 }
