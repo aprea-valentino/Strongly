@@ -1,60 +1,66 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { addItemToCart } from "../../services/cartService";
-import { productsService } from "../../services/productsService";
-import "./ProductDetail.css"; // 👈 asegurate de tener este CSS
+import { useDispatch, useSelector } from "react-redux";
+
+
+import { fetchProducts } from "../../redux/productsSlice";
+import { addToCart } from "../../redux/CartSlice";  
+
+
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import "./ProductDetail.css";
 
 export default function ProductDetail() {
   const { id } = useParams();
-  const [product, setProduct] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+
+  const { items: products, loading, error } = useSelector(
+    (state) => state.products
+  );
+
+  const product = products.find((p) => p.id === Number(id));
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const data = await productsService.getProductById(id);
-        setProduct(data);
-      } catch (err) {
-        console.error(err);
-        setError("No se pudo cargar el producto.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchProduct();
-  }, [id]);
+    // Cargar productos solo si no están cargados
+    if (products.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, products.length]);
 
-const handleAddToCart = async () => {
-  const role = localStorage.getItem("role");
+  const handleAddToCart = () => {
+    const role = localStorage.getItem("role");
 
-  if (role === "ADMIN") {
-    alert("No podes tener un carrito siendo vendedor");
-    return; // salimos de la función
-  }
+    if (role === "ADMIN") {
+      toast.error("No podés tener un carrito siendo vendedor");
+      return;
+    }
+    dispatch(addToCart({ productId: Number(id), quantity: 1 }))
+      .unwrap()
+      .then(() =>     alert("🛒 Producto agregado al carrito"))
+      .catch(() =>
+        //toast.error("⚠️ Debes iniciar sesión para agregar productos")
+          console.error(err)
 
-  try {
-    await addItemToCart(product.id, 1);
-    alert("🛒 Producto agregado al carrito");
-  } catch (err) {
-    alert("⚠️ Debes iniciar sesión para agregar productos");
-    console.error(err);
-  }
-};
-
-
+      );
+  };
+ //toast.success("🛒 Producto agregado al carrito"))
   if (loading) return <p className="loading">Cargando producto...</p>;
-  if (error) return <p className="error">{error}</p>;
+  if (error) return <p className="errorrrr">{error}</p>;
   if (!product) return <p className="empty">No se encontró el producto.</p>;
 
   return (
     <div className="product-detail-container">
+
       <div className="product-card">
         <div className="product-info">
           <h2>{product.name}</h2>
           <p className="description">{product.description}</p>
           <h3>${product.price}</h3>
           <p className="stock">Stock disponible: {product.stock}</p>
+
           <button className="add-btn" onClick={handleAddToCart}>
             Agregar al carrito 🛒
           </button>
@@ -63,3 +69,4 @@ const handleAddToCart = async () => {
     </div>
   );
 }
+

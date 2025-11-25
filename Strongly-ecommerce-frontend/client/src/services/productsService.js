@@ -21,6 +21,7 @@ async function getAllProducts() {
   try {
     const res = await fetch(`${API_URL}`);
     if (!res.ok) throw new Error(`Error ${res.status}`);
+
     return await res.json();
   } catch (err) {
     console.error("Error al obtener todos los productos:", err);

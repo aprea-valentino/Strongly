@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
+import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
+
 import com.uade.tpo.demo.entity.dto.ProductResponseSimple;
 import com.uade.tpo.demo.entity.dto.UpdateProductPrice;
 import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
@@ -49,14 +51,15 @@ public class ProductController {
     private com.uade.tpo.demo.repository.ProductRepository productRepository;
 
     @GetMapping
-    public List<ProductResponse> getAllProducts() {
+    public List<ProductResponseCategory> getAllProducts() {
         return productRepository.findAll().stream()
-            .map(p -> new ProductResponse(
+            .map(p -> new ProductResponseCategory(
                 p.getId(),
                 p.getName(),
                 p.getDescription(),
                 p.getPrice(),
-                p.getStock()
+                p.getStock(),
+            p.getCategory() != null ? p.getCategory().getId() : null
             ))
             .toList();
         }

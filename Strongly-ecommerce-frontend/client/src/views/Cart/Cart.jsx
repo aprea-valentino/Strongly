@@ -1,64 +1,46 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect,useState  } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import Pago from '../Pagos/Pago';
+
 import {
-  getCart,
-  removeItemFromCart,
+  fetchCart,
+  removeCartItem,
   updateCartItem,
-  clearCart,
-  checkout,
-} from "../../services/cartService";
+  clearUserCart,
+  cartCheckout,
+} from "../../redux/CartSlice";
+
 import "./Cart.css";
 
 export default function Cart() {
-  const [cart, setCart] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  
-const loadCart = async () => {
-  setLoading(true);
-  setError(null); // limpiar error previo
-
-  try {
-    const data = await getCart();
-    setCart(data);
-  } catch (err) {
-    console.error(err); // útil para debugging
-    // Mostrar mensaje amigable + mensaje real si existe
-    setError(
-      err instanceof Error
-        ? `Error al obtener el carrito. ${err.message}`
-        : "Error desconocido al obtener el carrito."
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+  const dispatch = useDispatch();
+  const { items, total, loading, error } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    loadCart();
-  }, []);
+    dispatch(fetchCart());
+  }, [dispatch]);
 
-  const handleRemove = async (productId) => {
-    await removeItemFromCart(productId);
-    loadCart();
+  const handleRemove = (productId) => {
+    dispatch(removeCartItem(productId));
   };
 
-  const handleQuantityChange = async (productId, qty) => {
-    await updateCartItem(productId, qty);
-    loadCart();
+  const handleQuantityChange = (productId, qty) => {
+    dispatch(updateCartItem({ productId, quantity: qty }));
   };
 
-  const handleClear = async () => {
-    await clearCart();
-    loadCart();
+  const handleClear = () => {
+    dispatch(clearUserCart());
   };
 
-  const handleCheckout = async () => {
-    const response = await checkout();
-    alert("Compra realizada con éxito ✅");
-    console.log(response);
-    loadCart();
-  };
+ /* const handleCheckout = () => {
+    dispatch(cartCheckout());
+  };*/
+const [showPayment, setShowPayment] = useState(false);
 
+const handleCheckout = () => {
+  setShowPayment(true);
+};
   if (loading) return <p>Cargando carrito...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -66,12 +48,12 @@ const loadCart = async () => {
     <div className="cart-container">
       <h2>🛒 Tu carrito</h2>
 
-      {(!cart || cart.items.length === 0) ? (
+      {(!items || items.length === 0) ? (
         <p>Tu carrito está vacío.</p>
       ) : (
         <>
           <ul className="cart-items">
-            {cart.items.map((item) => (
+            {items.map((item) => (
               <li key={item.productId} className="cart-item">
                 <span>{item.name}</span>
                 <span>${item.unitPrice}</span>
@@ -88,11 +70,17 @@ const loadCart = async () => {
             ))}
           </ul>
 
-          <h3>Total: ${cart.total}</h3>
+          <h3>Total: ${total}</h3>
 
           <div className="cart-actions">
             <button onClick={handleClear}>Vaciar carrito</button>
             <button onClick={handleCheckout}>Finalizar compra</button>
+            {showPayment && (  <Pago
+    onClose={() => setShowPayment(false)}
+    items={items}
+    total={total}
+  />
+)}
           </div>
         </>
       )}

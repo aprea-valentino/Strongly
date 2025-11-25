@@ -3,7 +3,6 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { productsService } from "../../services/productsService"; 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/CategoriesSlice";
-import NuevaCategory from "./NuevaCategory";
 
 import './AddProduct.css';
 
@@ -27,9 +26,6 @@ export default function AddProduct() {
 
   const dispatch = useDispatch();
 const { items: categories } = useSelector((state) => state.categories);
-
-const [showModal, setShowModal] = useState(false);
-const [newCategoryName, setNewCategoryName] = useState("");
 
 useEffect(() => {
   // Cargar categorías desde Redux (una sola vez)
@@ -143,10 +139,7 @@ useEffect(() => {
 
         <div className="form-group">
           <label htmlFor="categoryId">Categoría:</label>
-          <button onClick={() => setShowModal(true)}>Nueva Categoría</button>
-        {showModal && (
-          <NuevaCategory onClose={() => setShowModal(false)} />
-        )}
+        
             <select
             id="categoryId"
             name="categoryId"
@@ -172,7 +165,13 @@ useEffect(() => {
     </div>
   );
 }
-/* import React, { useState, useEffect } from 'react';
+/* 
+ <button onClick={() => setShowModal(true)}>Nueva Categoría</button>
+        {showModal && (
+          <NuevaCategory onClose={() => setShowModal(false)} />
+        )}
+          
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import './AddProduct.css';
 import { productsService } from "../../services/productsService"; 

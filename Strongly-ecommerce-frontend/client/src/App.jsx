@@ -10,16 +10,17 @@ import manage from "./views/Admin/manage.jsx";
 import Cart from "./views/Cart/Cart.jsx";
 import AddProduct from "./views/Admin/AddProduct.jsx";
 import PaginaDescuentos from "./views/Admin/PaginaDescuentos.jsx";
-
+import AddCategorie from "./views/Admin/NuevaCategory.jsx";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,  } from "react-router-dom";
 
 
 export default function App() {
 
   return (
-    <Routes>
-      
+
+ <Routes>
+
       {/* 1. RUTA PÚBLICA SIN LAYOUT (Register/Login) */}
       <Route path="/register" element={<Register />} /> 
 
@@ -37,6 +38,8 @@ export default function App() {
         
         {/*RUTAS ADMIN*/}
         <Route path="/admin" element={<AdminRoute element={AdminPage} />} />
+                <Route path="/admin/addCategorie"element={<AdminRoute element={AddCategorie} />}/>
+
         <Route path="/admin/add"element={<AdminRoute element={AddProduct} />}/>
         <Route path="/admin/manage"element={<AdminRoute element={manage} />}/>
          <Route path="/admin/sale"element={<AdminRoute element={PaginaDescuentos} />}/>
@@ -45,7 +48,8 @@ export default function App() {
         
         
       </Route> 
-      
-    </Routes>
+
+    </Routes>   
+        
   );
 }
