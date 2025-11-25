@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Importar useNavigate
 import './AdminPage.css'; // Crea un CSS simple para esta vista
+import NuevaCategory from './NuevaCategory';
+import { useState } from 'react';
 
 export default function AdminPage() {
     const navigate = useNavigate(); // Inicializar el hook
@@ -15,12 +17,29 @@ export default function AdminPage() {
         console.log(`Ejecutando acción: ${action}`);
     };
 
+  const [showModal, setShowModal] = useState(false);
+
     return (
         <div className="admin-dashboard">
             <h1>Panel de Administración de Productos</h1>
             <p>Bienvenido, Administrador. Desde aquí puedes gestionar el inventario.</p>
             
             <div className="admin-actions">
+
+
+
+       
+      <button 
+        className="btn-categories"
+        onClick={() => setShowModal(true)}
+      >
+        Agregar Nueva Categoría
+      </button>
+
+      {showModal && (
+        <NuevaCategory onClose={() => setShowModal(false)} />
+      )}
+
                 <button 
                     className="btn-add"
                     onClick={() => navigate('/admin/add')}// Redirige a /admin/AddProduct

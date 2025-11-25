@@ -19,6 +19,7 @@ import com.uade.tpo.demo.exceptions.ProductNotFoundException;
 import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
 import com.uade.tpo.demo.repository.UserRepository;
+import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,13 +36,15 @@ public class ProductServiceImpl implements ProductService {
 
     // --------------------- GET PRODUCTS ---------------------
     @Override
-    public Page<ProductResponse> getProduct(Pageable pageable) {
-        return productRepository.findAll(pageable).map(p -> new ProductResponse(
+    public Page<ProductResponseCategory> getProduct(Pageable pageable) {
+        return productRepository.findAll(pageable).map(p -> new ProductResponseCategory(
                 p.getId(),
                 p.getName(),
                 p.getDescription(),
                 p.getPrice(),
-                p.getStock()
+                p.getStock(),
+            p.getCategory() != null ? p.getCategory().getId() : null
+
             ));
     }
 
@@ -195,6 +198,4 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(product);
     }
  */
-  
-
    

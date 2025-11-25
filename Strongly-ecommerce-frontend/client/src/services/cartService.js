@@ -3,6 +3,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE || '/api';
 const API_URL = `${API_BASE}/cart`;
 
+
 // 🔹 Obtener carrito del usuario logueado
 
 
@@ -26,7 +27,6 @@ export const getCart = async () => {
   return await res.json();
 };
 
-// 🔹 Agregar un producto al carrito
 export const addItemToCart = async (productId, quantity = 1) => {
   const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/items`, {
@@ -37,6 +37,13 @@ export const addItemToCart = async (productId, quantity = 1) => {
     },
     body: JSON.stringify({ productId, quantity }),
   });
+  console.log( {   method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ productId, quantity }),}
+  )
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Error al agregar producto: ${text}`);
@@ -44,7 +51,6 @@ export const addItemToCart = async (productId, quantity = 1) => {
   return await res.json();
 };
 
-// 🔹 Actualizar cantidad de un producto
 export const updateCartItem = async (productId, quantity) => {
   const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/items`, {

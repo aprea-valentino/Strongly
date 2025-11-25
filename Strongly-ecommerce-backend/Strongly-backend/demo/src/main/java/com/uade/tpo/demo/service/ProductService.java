@@ -13,11 +13,12 @@ import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
+import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
 
 public interface ProductService {
 
     // Cambié PageRequest por Pageable y ProductRequest por ProductResponse
-    Page<ProductResponse> getProduct(Pageable pageable);
+    Page<ProductResponseCategory> getProduct(Pageable pageable);
 
     Optional<ProductResponse> getProductById(Long productId);
 

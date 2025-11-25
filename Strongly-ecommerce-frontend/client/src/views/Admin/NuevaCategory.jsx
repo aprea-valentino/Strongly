@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories,createCategory } from "../../redux/CategoriesSlice";
-
+import './NuevaCategory.css';
 const NuevaCategory = ({ onClose }) => {
   const dispatch = useDispatch();
 
@@ -38,10 +38,15 @@ const NuevaCategory = ({ onClose }) => {
 
         <h2>Nueva Categoría</h2>
 
+   
+
         <div className="form-group">
-          <label>Nombre</label>
+          <label htmlFor="title">Nombre:</label>
+
           <input
             type="text"
+             id="title" 
+             name="title" 
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Nombre de la categoría"
@@ -57,7 +62,7 @@ const NuevaCategory = ({ onClose }) => {
         </div>
 
         <div className="form-group">
-          <label>Parent (Categoría padre)</label>
+          <label>Parent</label>
 
           {loading ? (
             <p>Cargando categorías...</p>
@@ -66,7 +71,7 @@ const NuevaCategory = ({ onClose }) => {
               value={parentId || ""}
               onChange={(e) => setParentId(e.target.value)}
             >
-              <option value="">Sin parent (categoría raíz)</option>
+              <option value="">Sin parent</option>
 
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>

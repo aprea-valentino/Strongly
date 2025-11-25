@@ -9,6 +9,14 @@ export const fetchProducts = createAsyncThunk(
   return data; // Esto se convierte en action.payload si tiene éxito (fulfilled)
       }
 );
+export const fetchProductsbyCategorie = createAsyncThunk(
+  'products/category',
+  async (idCategory) => {
+    const data = await productsService.getProductsByCategory(idCategory);
+    return data;
+  }
+);
+
 
 export const createProduct = createAsyncThunk(
   "/products",
@@ -62,7 +70,21 @@ const productsSlice = createSlice({
         if (index !== -1) {
           state.items[index] = action.payload;
         }
-      });
+      })
+       .addCase(fetchProductsbyCategorie.pending, (state) => {
+            state.loading= true,
+            state.error= null
+        })
+        .addCase(fetchProductsbyCategorie.fulfilled, (state, action) => {
+            state.loading= false,
+            state.items=action.payload //esto se guarda en el estado global de items
+        })
+        .addCase(fetchProductsbyCategorie.rejected, (state, action) => {
+            state.loading= false,
+            state.error=action.error.message
+        })
+      ;
+      
 }});
 
 export default productsSlice.reducer
