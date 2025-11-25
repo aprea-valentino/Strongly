@@ -12,6 +12,7 @@ import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
+import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
@@ -104,6 +105,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // --------------------- UPDATE ---------------------
+    /* ESTE ES EL UPDATE DE PRICE Y STOCK SEPARADOS
+
     @Override
     public ProductResponse updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException {
         Product product = productRepository.findById(productId)
@@ -138,8 +141,36 @@ public class ProductServiceImpl implements ProductService {
         );
     }
 }
+*/
 
+// ESTE ES EL UPDATE QUE UNE PRICE Y STOCK EN UN SOLO MÉTODO
+    @Override
+    public ProductResponse updateProduct(UpdateProductRequest req) throws ProductNotFoundException {
 
+        Product product = productRepository.findById(req.getIdProducto())
+                .orElseThrow(() -> new ProductNotFoundException("Producto " + req.getIdProducto() + " no encontrado"));
+
+        // Si viene precio lo actualiza
+        if (req.getPrecio() != null) {
+            product.setPrice(BigDecimal.valueOf(req.getPrecio()));
+        }
+
+        // Si viene stock lo actualiza
+        if (req.getStock() != null) {
+            product.setStock(req.getStock());
+        }
+
+        Product updated = productRepository.save(product);
+
+        return new ProductResponse(
+            updated.getId(),
+            updated.getName(),
+            updated.getDescription(),
+            updated.getPrice(),
+            updated.getStock()
+        );
+    }
+}
 /* 
     public List<ProductRequest> getProductsByCategory(Long categoryId) throws CategoryNotFoundException {
         

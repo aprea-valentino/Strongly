@@ -8,7 +8,7 @@ import categoriesReducer from "./CategoriesSlice";
 export const store = configureStore({
     reducer:{
         products: productsReducer,
-    categories: categoriesReducer,
+        categories: categoriesReducer,
 
      }
 })

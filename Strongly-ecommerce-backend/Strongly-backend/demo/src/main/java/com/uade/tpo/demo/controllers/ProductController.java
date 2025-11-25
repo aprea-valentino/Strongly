@@ -9,6 +9,7 @@ import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
 import com.uade.tpo.demo.entity.dto.ProductResponseSimple;
 import com.uade.tpo.demo.entity.dto.UpdateProductPrice;
+import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
 import com.uade.tpo.demo.entity.dto.UpdateProductStock;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
@@ -74,6 +75,17 @@ public class ProductController {
     }
 
 
+//NUEVO UPDATE PRODUCT PRICE Y STOCK
+@PostMapping("/updateProduct")
+public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest req)
+        throws ProductNotFoundException {
+
+    ProductResponse result = productService.updateProduct(req);
+    return ResponseEntity.ok(result);
+}
+
+
+    /* 
 @PostMapping("/updatePrice")
 public ResponseEntity<ProductResponse> updatePrice(@RequestBody UpdateProductPrice req) 
         throws ProductNotFoundException {
@@ -89,7 +101,7 @@ public ResponseEntity<ProductResponse> updateStock(@RequestBody UpdateProductSto
     ProductResponse result = productService.updateStock(req.getIdProducto(), req.getStock());
     return ResponseEntity.ok(result);
 }
-
+ */
 
    @GetMapping("/{productId}")
 public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {

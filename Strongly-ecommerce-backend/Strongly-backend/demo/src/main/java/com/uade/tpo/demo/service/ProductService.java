@@ -26,7 +26,7 @@ public interface ProductService {
     ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user)
             throws ProductDuplicateException, CategoryNotFoundException;
 
-    /* 
+    /* ESTOS DOS PASAN A SER PARTE DE updateProduct
     ProductResponse updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException;
 
     ProductResponse updateStock(Long productId, int newStock) throws ProductNotFoundException;
