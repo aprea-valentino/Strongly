@@ -24,6 +24,7 @@ async function getAllProducts(searchQuery) {
 
     const res = await fetch(url);
     if (!res.ok) throw new Error(`Error ${res.status}`);
+  
 
     return await res.json();
   } catch (err) {
@@ -56,7 +57,40 @@ async function getProductById(productId) {
     throw err;
   }
 }
+async function createProduct(payload, files) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token");
 
+  const formData = new FormData();
+
+  formData.append(
+    "product",
+    new Blob([JSON.stringify(payload)], { type: "application/json" })
+  );
+
+  if (files && files.length > 0) {
+    for (const file of files) {
+      formData.append("images", file);
+    }
+  }
+
+  const res = await fetch(`${API_URL}/multipart`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`, // NO agregar Content-Type para multipart
+    },
+    body: formData,
+  });
+
+  if (!res.ok) {
+    throw new Error(await res.text());
+  }
+
+  return await res.json();
+}
+
+
+/*
 // Crear producto
 async function createProduct(productData) {
   const token = localStorage.getItem("token");
@@ -83,7 +117,7 @@ async function createProduct(productData) {
     throw err;
   }
 }
-
+*/
 // Crear producto con imágenes (multipart)
 async function createProductWithImages(formData) {
   const token = localStorage.getItem("token");

@@ -9,8 +9,8 @@ export default function ListCards({ productos }) {
     <div className="list-cards">
       {productos.map((prod) => {
         const firstImageId = (prod.imageIds && prod.imageIds.length > 0) ? prod.imageIds[0] : null;
-        const imageUrl = firstImageId ? `${API_BASE}/product/${prod.id}/images/${firstImageId}` : null;
-        return (
+     
+                  return (
           <Link
             key={prod.id}
             to={`/product/${prod.id}`}
@@ -21,7 +21,7 @@ export default function ListCards({ productos }) {
               nombre={prod.name}
               descripcion={prod.description}
               precio={prod.price}
-              imageUrl={imageUrl}
+              imagen={prod.image}
             />
           </Link>
         );

@@ -62,17 +62,29 @@ const categoriesSlice = createSlice({
         state.error = action.error.message;
       })
 
-      .addCase(fetchCategoryById.fulfilled, (state, action) => {
-        state.currentCategory = action.payload;
-      })
 
-      .addCase(fetchCategoriesByParent.fulfilled, (state, action) => {
-        state.items = action.payload;
-      })
+      .addCase(fetchCategoryById.pending, (state) => {
+  state.loading = true;
+  state.error = null;
+})
+.addCase(fetchCategoryById.fulfilled, (state, action) => {
+  state.loading = false;
+  state.currentCategory = action.payload;
+})
+.addCase(fetchCategoryById.rejected, (state, action) => {
+  state.loading = false;
+  state.error = action.error.message;
+})
 
-      .addCase(createCategory.fulfilled, (state, action) => {
-        state.items.push(action.payload);
-      });
+
+.addCase(fetchCategoriesByParent.pending, (state) => { state.loading = true; state.error = null; })
+.addCase(fetchCategoriesByParent.fulfilled, (state, action) => { state.loading = false; state.items = action.payload; })
+.addCase(fetchCategoriesByParent.rejected, (state, action) => { state.loading = false; state.error = action.error.message; })
+
+.addCase(createCategory.pending, (state) => { state.loading = true; state.error = null; })
+.addCase(createCategory.fulfilled, (state, action) => { state.loading = false; state.items.push(action.payload); })
+.addCase(createCategory.rejected, (state, action) => { state.loading = false; state.error = action.error.message; })
+
   },
 });
 

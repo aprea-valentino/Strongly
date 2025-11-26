@@ -1,5 +1,7 @@
 package com.uade.tpo.demo.controllers;
 
+import java.io.IOException;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,19 +23,25 @@ import com.uade.tpo.demo.service.ProductService;
 import jakarta.validation.Valid;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 // PreAuthorize removed from updateProduct; Security rules configured in SecurityConfig
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
+import com.uade.tpo.demo.entity.ProductImage;
 
 @RestController
 @RequestMapping("/api/v1/product")
@@ -51,23 +59,40 @@ public class ProductController {
     @Autowired
     private com.uade.tpo.demo.repository.ProductRepository productRepository;
 
-    @GetMapping
-    public List<ProductResponseCategory> getAllProducts( 
-    @RequestParam (value = "q", required =false) String searchQuery){
-            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+
+            @GetMapping
+public List<ProductResponseCategory> getAllProducts(
+        @RequestParam(value = "q", required = false) String searchQuery
+) {
+
+
+    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
                 return productService.searchProductsByName(searchQuery);
-            }
-        return productRepository.findAll().stream()
-            .map(p -> new ProductResponseCategory(
-                p.getId(),
-                p.getName(),
-                p.getDescription(),
-                p.getPrice(),
-                p.getStock(),
-            p.getCategory() != null ? p.getCategory().getId() : null
-            ))
+    } 
+
+    return  productRepository.findAllWithImages().stream()
+            .map(p -> {
+
+                // obtiene la primera imagen (o null)
+                ProductImage img = p.getImages().isEmpty()
+                        ? null
+                        : p.getImages().get(0);
+
+                return new ProductResponseCategory(
+                        p.getId(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getPrice(),
+                        p.getStock(),
+                        p.getCategory() != null ? p.getCategory().getId() : null,
+                        img != null ? img.getImage() : null,
+                        img != null ? img.getImageContentType() : null
+                );
+            })
             .toList();
-        }
+}
+
+
     
      @GetMapping("/category/{categoryId}")
     public List<ProductResponse> getProductsByCategory(@PathVariable Long categoryId) {
@@ -77,7 +102,9 @@ public class ProductController {
                 p.getName(),
                 p.getDescription(),
                 p.getPrice(),
-                p.getStock()
+                p.getStock(),
+                null,
+                null
             ))
             .toList();
     }
@@ -122,57 +149,39 @@ public ResponseEntity<ProductResponse> getProductById(@PathVariable Long product
 
 
 
-@PostMapping
-public ResponseEntity<?> createProduct(@Valid @RequestBody ProductRequest req) 
-        throws CategoryNotFoundException {
-    // 1) validar que venga id_category e id_user (si los necesitás)
+@PostMapping(value = "/multipart", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+public ResponseEntity<?> createProduct(
+        @RequestPart("product") @Valid ProductRequest req,
+        @RequestPart(value = "images", required = false) MultipartFile[] imagesFiles
+) throws CategoryNotFoundException, IOException, ProductDuplicateException {
 
-     if (req.getId_category() == null) {
-        return ResponseEntity.badRequest().body("Falta el campo 'id_category' en el JSON");
-    }
-    if (req.getId_User() == null) {
-        return ResponseEntity.badRequest().body("Falta el campo 'id_user' en el JSON");
-    }
+    List<byte[]> imagesBytes = new ArrayList<>();
+    List<String> imagesContentTypes = new ArrayList<>();
 
-    
-
-
-    // 2) buscar FK (si no existen, 404)
-    var category = categoryRepository.findById(req.getId_category())
-        .orElseThrow(() -> new CategoryNotFoundException("La categoria " + req.getId_category() + " no existe"));
-
-    var creator = userRepository.findById(req.getId_User())
-        .orElseThrow(() -> new RuntimeException("El usuario " + req.getId_User() + " no existe"));
-
-
-    // 3) construir y guardar el Product
-    // Crear producto
-    var p = new Product();
-    p.setName(req.getName());
-    p.setDescription(req.getDescription());
-    p.setPrice(req.getPrice());
-    p.setStock(req.getStock());
-    p.setSlug(req.getName().trim().toLowerCase().replace(" ", "-"));
-    p.setCategory(category);
-    p.setCreatedBy(creator);
-    if (req.getIs_active() != null) {
-        p.setIsActive(req.getIs_active());
+    if (imagesFiles != null) {
+        for (MultipartFile file : imagesFiles) {
+            if (!file.isEmpty()) {
+                imagesBytes.add(file.getBytes());
+                imagesContentTypes.add(file.getContentType());
+            }
+        }
     }
 
-    var saved = productRepository.save(p);
-
-    // Devolver solo datos esenciales + email del creador (SERIA MEJOR DEJAR ESTO EN FORMATO DTO)
-    ProductResponseSimple response = new ProductResponseSimple(
-        saved.getId(),
-        saved.getName(),
-        saved.getDescription(),
-        saved.getPrice(),
-        saved.getStock(),
-        saved.getCreatedBy().getEmail()
+    ProductResponse response = productService.createProduct(
+            req.getName(),
+            req.getDescription(),
+            req.getStock(),
+            req.getPrice(),
+            req.getId_category(),
+            req.getId_User(),
+            imagesBytes,
+            imagesContentTypes
     );
 
     return ResponseEntity.ok(response);
-    }
+}
+
+
 
 }
 

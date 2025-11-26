@@ -16,12 +16,15 @@ public class ProductImage {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(nullable = false, length = 500)
-    private String url;
+    @Lob
+    @Column(name = "image", columnDefinition = "LONGBLOB")
+    private byte[] image;
 
-    @Column(name = "is_primary", nullable = false)
-    private Boolean isPrimary = false;
+    @Column(name = "image_content_type")
+    private String imageContentType;
+
 
     @Column(name = "sort_order", nullable = false)
     private Integer sortOrder = 0;
+
 }

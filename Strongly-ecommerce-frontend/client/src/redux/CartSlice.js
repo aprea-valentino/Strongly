@@ -62,7 +62,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // -------- FETCH CART --------
+      //  FETCH CART 
       .addCase(fetchCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -77,34 +77,79 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      // -------- ADD TO CART --------
+      //  ADD TO CART 
+      .addCase(addToCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(addToCart.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = action.payload.items;
         state.total = action.payload.total;
       })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
 
-      // -------- UPDATE ITEM --------
+      //  UPDATE ITEM 
+      .addCase(updateCartItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateCartItem.fulfilled, (state, action) => {
+        state.loading = false;
         state.items = action.payload.items;
         state.total = action.payload.total;
       })
+      .addCase(updateCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
 
-      // -------- REMOVE ITEM --------
+      //  REMOVE ITEM 
+      .addCase(removeCartItem.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(removeCartItem.fulfilled, (state, action) => {
+        state.loading = false;
         const productId = action.payload;
         state.items = state.items.filter((i) => i.productId !== productId);
       })
+      .addCase(removeCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
 
-      // -------- CLEAR CART --------
+      //  CLEAR CART 
+      .addCase(clearUserCart.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(clearUserCart.fulfilled, (state) => {
+        state.loading = false;
         state.items = [];
         state.total = 0;
       })
+      .addCase(clearUserCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
 
-      // -------- CHECKOUT --------
+      //  CHECKOUT 
+      .addCase(cartCheckout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(cartCheckout.fulfilled, (state) => {
+        state.loading = false;
         state.items = [];
         state.total = 0;
+      })
+      .addCase(cartCheckout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
   },
 });

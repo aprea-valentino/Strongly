@@ -18,6 +18,14 @@
     align-items: flex-start;
 }
 
+.product-image {
+  width: 100%;
+  max-width: 350px;
+  border-radius: 10px;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
 /* Estilo para la sección de la imagen */
 .product-image-section {
     width: 65%; 
