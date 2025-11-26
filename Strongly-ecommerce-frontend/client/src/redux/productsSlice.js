@@ -17,15 +17,19 @@ export const fetchProductsbyCategorie = createAsyncThunk(
   }
 );
 
-
 export const createProduct = createAsyncThunk(
   "/products",
-  async (newProduct) => {
-    const data = await productsService.createProduct(newProduct);
-    return data;
+  async ({ productData, imageFiles }, { rejectWithValue }) => {
+    try {
+
+      const data = await productsService.createProduct(productData,imageFiles);
+      return data;
+    } catch (err) {
+      return rejectWithValue(err.message || "Error al crear producto");
+    }
   }
 );
-
+/*
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
   async (updatedProduct) => {
@@ -33,6 +37,23 @@ export const updateProduct = createAsyncThunk(
     const newPrice = precio;
     const data = await productsService.updatePrice(id, newPrice);
     return data;
+  }
+);*/
+
+export const updateProduct = createAsyncThunk(
+  "products/updateProduct",
+  async ({ id, productData }, { rejectWithValue }) => {
+    try {
+      const updated = await productsService.updatePriceStock( parseInt(id),
+       productData.price,
+        productData.stock,
+         productData.name,
+          productData.id_category,
+           productData.descuento );
+      return updated;
+    } catch (err) {
+      return rejectWithValue(err.message || "Error al actualizar producto");
+    }
   }
 );
 

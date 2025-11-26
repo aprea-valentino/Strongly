@@ -20,7 +20,10 @@ export default function ListCards({ productos }) {
             <Card
               nombre={prod.name}
               descripcion={prod.description}
-              precio={prod.price}
+              precioOriginal={prod.price}
+              precioConDescuento={ prod.descuento && prod.descuento > 0
+      ? prod.price - (prod.price * prod.descuento) / 100
+      : prod.price}
               imagen={prod.image}
             />
           </Link>

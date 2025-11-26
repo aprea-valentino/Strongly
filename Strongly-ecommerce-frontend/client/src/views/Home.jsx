@@ -40,7 +40,8 @@ export default function Home() {
   const productoPrincipal = productos[0] || { name: "", description: "", precio: "" };
   // Productos destacados: el resto
   const productosDestacados = productos.slice(1);
-
+const precio = productoPrincipal.price;
+const descuento =productoPrincipal.descuento;
   return (
     <div className="home">
       <div className="content">
@@ -48,7 +49,12 @@ export default function Home() {
         <FeaturedCard
           nombre={`${productoPrincipal.name}`}
           descripcion={`${productoPrincipal.description}`}
-          precio={`$${productoPrincipal.price}`}
+           precioOriginal={precio}
+          precioConDescuento={
+          descuento && descuento > 0
+            ? precio - (precio * descuento) / 100
+            : precio
+        }
           imagen={`${productoPrincipal.image}`}
         />
       </div>

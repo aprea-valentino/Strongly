@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { productsService } from "../../services/productsService"; 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/CategoriesSlice";
+import { updateProduct,createProduct } from "../../redux/productsSlice";
 
 import './AddProduct.css';
 
@@ -11,6 +12,7 @@ const defaultFormData = {
   title: '',
   description: '',
   price: '',
+  descuento: '',
   stock: '',
   categoryId: '', // solo el id
   imageFile: null
@@ -51,6 +53,7 @@ useEffect(() => {
         title: product.name || product.title || "",
         description: product.description || "",
         price: product.price ? parseFloat(product.price) : "",
+        descuento: product.descuento ? parseFloat(product.descuento) : "",
         stock: product.stock ? parseInt(product.stock) : "",
         // ProductResponse may not include category id; leave empty if not provided
         categoryId: product.categoryid ? parseInt(product.categoryid) : (product.categoryId ? parseInt(product.categoryId) : ""),
@@ -87,6 +90,7 @@ useEffect(() => {
       name: formData.title,
       description: formData.description,
       price: parseFloat(formData.price),
+      descuento: formData.descuento ? parseFloat(formData.descuento) : 0, 
       stock: parseInt(formData.stock),
       id_category: parseInt(formData.categoryId),
       id_user: parseInt(localStorage.getItem("id")),
@@ -104,23 +108,14 @@ useEffect(() => {
       }
     }
 
-    console.log("PRODUCT DATA:", productData);
-    console.log("IMAGES:", imageFiles);
+    console.log({ productData, imageFiles })
 
     // 3️⃣ Lógica de edición o creación
     if (isEditing) {
-      await productsService.updatePriceStock(
-        parseInt(productIdToEdit),
-        productData.price,
-        productData.stock,
-        productData.name,
-        productData.id_category
-      );
-      console.log("Producto editado correctamente");
-    } else {
-      await productsService.createProduct(productData, imageFiles);
-
-      console.log("Producto creado correctamente");
+ await dispatch(updateProduct({ id: parseInt(productIdToEdit), productData  })).unwrap();    
+} else {
+await dispatch(createProduct({ productData, imageFiles })).unwrap();
+//await productsService.createProduct(productData, imageFiles)
     }
 
     navigate("/admin/manage");
@@ -195,6 +190,11 @@ useEffect(() => {
         <div className="form-group">
           <label htmlFor="price">Precio ($):</label>
           <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} min="0" step="0.01" required />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="descuento">Descuento (%):</label>
+          <input    type="number"    id="descuento"    name="descuento"    value={formData.descuento || 0}    onChange={handleChange}    min="0"    max="100"    step="0.01"  />
         </div>
 
         <div className="form-group">
