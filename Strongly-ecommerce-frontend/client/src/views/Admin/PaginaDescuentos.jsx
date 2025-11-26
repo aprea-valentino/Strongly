@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Swal from 'sweetalert2';
 import "./PaginaDescuentos.css";
 import { useNavigate } from "react-router-dom";
 import { productsService } from "../../services/productsService";
@@ -29,10 +30,18 @@ export default function PaginaDescuentos() {
       // Podrías redirigir a una página de edición o abrir un modal
       navigate(`/admin/discount?product=${id}&action=${action}`);
     } else if (action === "delete") {
-      if (window.confirm(`¿Seguro que quieres eliminar el descuento de ${name}?`)) {
-        // Acá harías un fetch DELETE o PATCH al backend para quitar el descuento
-        alert(`Descuento de ${name} eliminado (simulación).`);
-      }
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: `¿Seguro que quieres eliminar el descuento de ${name}?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire('Eliminado', `Descuento de ${name} eliminado (simulación).`, 'success');
+        }
+      });
     }
   };
 

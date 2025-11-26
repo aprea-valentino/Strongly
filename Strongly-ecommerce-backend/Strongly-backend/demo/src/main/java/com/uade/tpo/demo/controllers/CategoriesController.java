@@ -27,18 +27,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("categories")
+@RequestMapping("/api/v1/categories")
 public class CategoriesController {
 
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping
-        public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        @GetMapping
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
         List<CategoryResponse> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 
+    @GetMapping("/by-parent/{parentId}")
+    public ResponseEntity<List<Category>> getCategoriesByParent(@PathVariable Long parentId) throws CategoryNotFoundException {
+        List<Category> categories = categoryService.getCategorysByIdParent(parentId);
+        if (categories.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(categories);
+    }
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<Category> getCategoryById(@PathVariable Long categoryId) {
@@ -48,15 +56,6 @@ public class CategoriesController {
 
         return ResponseEntity.noContent().build();
     }
-
-@GetMapping("/by-parent/{parentId}")
-public ResponseEntity<List<Category>> getCategoriesByParent(@PathVariable Long parentId) throws CategoryNotFoundException {
-    List<Category> categories = categoryService.getCategorysByIdParent(parentId);
-    if (categories.isEmpty()) {
-        return ResponseEntity.noContent().build();
-    }
-    return ResponseEntity.ok(categories);
-}
     @PostMapping
     public ResponseEntity<Object> createCategory(@RequestBody CategoryRequest categoryRequest)
             throws CategoryDuplicateException {

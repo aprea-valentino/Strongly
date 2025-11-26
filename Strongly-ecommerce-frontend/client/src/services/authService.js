@@ -26,6 +26,7 @@ const decoded = jwt_decode(data.access_token);
 
 localStorage.setItem("role", decoded.rol);
 localStorage.setItem("id", decoded.id);
+localStorage.setItem("email", decoded.sub); // guarda email (sub es el email en JWT)
 console.log( localStorage.getItem("role")); // "ADMIN" o "BUYER"
 console.log( localStorage.getItem("id")); // "ADMIN" o "BUYER"
 

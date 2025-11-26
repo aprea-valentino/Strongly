@@ -15,7 +15,7 @@ import com.uade.tpo.demo.service.CartService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
 

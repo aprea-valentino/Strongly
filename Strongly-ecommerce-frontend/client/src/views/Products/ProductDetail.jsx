@@ -39,7 +39,7 @@ export default function ProductDetail() {
     }
     dispatch(addToCart({ productId: Number(id), quantity: 1 }))
       .unwrap()
-      .then(() =>     alert("🛒 Producto agregado al carrito"))
+      .then(() =>     Swal.fire('Éxito', '🛒 Producto agregado al carrito', 'success'))
       .catch(() =>
         //toast.error("⚠️ Debes iniciar sesión para agregar productos")
           console.error(err)
