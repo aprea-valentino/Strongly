@@ -44,16 +44,17 @@ public class Product {
 
     @Column(name="updated_at")
     private Instant updatedAt;
+      
+ @Column(name="descuento", precision=5, scale=2)
+private BigDecimal descuento = BigDecimal.ZERO;
 
     @ManyToOne
     @JoinColumn(name="created_by")
     private User createdBy;
-
  
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductImage> images = new ArrayList<>();
 
-    // 👇 Evitar recursión: no serializar colecciones inversas
     @OneToMany(mappedBy = "product")
     @JsonIgnore
     private List<OrderItem> orderItems;

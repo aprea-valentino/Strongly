@@ -73,7 +73,8 @@ public Page<ProductResponseCategory> getProduct(Pageable pageable) {
                 p.getStock(),
                 p.getCategory() != null ? p.getCategory().getId() : null,
                 imageBytes,
-                contentType
+                contentType,
+                p.getDescuento()
         );
     });
 }
@@ -100,7 +101,8 @@ public Optional<ProductResponse> getProductById(Long productId) {
                         p.getPrice(),
                         p.getStock(),
                         imageBytes,
-                        contentType
+                        contentType,
+                        p.getDescuento()
                 );
             });
 }
@@ -116,7 +118,8 @@ public Optional<ProductResponse> getProductById(Long productId) {
                 p.getPrice(),
                 p.getStock(),
                 null,
-                null
+                null,
+                p.getDescuento()
             ))
             .toList();
         }
@@ -131,7 +134,8 @@ public ProductResponse createProduct(
         long category_id,
         long id_user,
         List<byte[]> imagesBytes,
-        List<String> imagesContentTypes
+        List<String> imagesContentTypes,
+        BigDecimal descuento
 ) throws ProductDuplicateException, CategoryNotFoundException {
 
     if (!productRepository.findByname(name).isEmpty()) {
@@ -150,7 +154,7 @@ public ProductResponse createProduct(
     p.setStock(stock);
     p.setSlug(name.trim().toLowerCase().replace(" ", "-"));
     p.setCategory(category);
-
+    p.setDescuento(descuento);
     if (creator != null) p.setCreatedBy(creator);
 
     // Agregar imágenes
@@ -173,7 +177,8 @@ public ProductResponse createProduct(
             saved.getPrice(),
             saved.getStock(),
             null,
-            null
+            null,
+            saved.getDescuento()
     );
 }
 
@@ -248,6 +253,12 @@ public ProductResponse createProduct(
             product.setCategory(category);
         }
 
+    BigDecimal descuento = req.getDescuento();
+if (descuento == null || descuento.compareTo(BigDecimal.ZERO) < 0) {
+    descuento = BigDecimal.ZERO;
+}
+product.setDescuento(descuento);
+
         Product updated = productRepository.save(product);
 
         return new ProductResponse(
@@ -257,27 +268,45 @@ public ProductResponse createProduct(
             updated.getPrice(),
             updated.getStock(),
             null,
-            null
+            null,
+            updated.getDescuento()
         );
     }
 
 
- @Override
+@Override
 public List<ProductResponseCategory> searchProductsByName(String nameQuery) {
 
     return productRepository.findByNameContainingIgnoreCase(nameQuery).stream()
-        .map(p -> new ProductResponseCategory(
-            p.getId(),
-            p.getName(),
-            p.getDescription(),
-            p.getPrice(),
-            p.getStock(),
-            p.getCategory() != null ? p.getCategory().getId() : null,
-            null,
-            null
-        ))
+        .map(p -> {
+
+            byte[] imageBytes = null;
+            String contentType = null;
+
+            // Tomar la primera imagen si existe
+            if (p.getImages() != null && !p.getImages().isEmpty()) {
+                ProductImage img = p.getImages().get(0);
+                imageBytes = img.getImage();
+                contentType = img.getImageContentType();
+            }
+
+            return new ProductResponseCategory(
+                p.getId(),
+                p.getName(),
+                p.getDescription(),
+                p.getPrice(),   // precio con descuento
+                p.getStock(),
+                p.getCategory() != null ? p.getCategory().getId() : null,
+                imageBytes,
+                contentType,
+                p.getDescuento()
+            );
+        })
         .toList();
-    }
+}
+
+
+
 
 }
 

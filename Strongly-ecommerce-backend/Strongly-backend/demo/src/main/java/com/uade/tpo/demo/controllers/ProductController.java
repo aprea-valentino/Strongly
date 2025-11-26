@@ -1,6 +1,7 @@
 package com.uade.tpo.demo.controllers;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -86,7 +87,8 @@ public List<ProductResponseCategory> getAllProducts(
                         p.getStock(),
                         p.getCategory() != null ? p.getCategory().getId() : null,
                         img != null ? img.getImage() : null,
-                        img != null ? img.getImageContentType() : null
+                        img != null ? img.getImageContentType() : null,
+                        p.getDescuento()
                 );
             })
             .toList();
@@ -101,10 +103,11 @@ public List<ProductResponseCategory> getAllProducts(
                 p.getId(),
                 p.getName(),
                 p.getDescription(),
-                p.getPrice(),
+                p.getPrice(),   
                 p.getStock(),
                 null,
-                null
+                null,
+                p.getDescuento()
             ))
             .toList();
     }
@@ -175,7 +178,8 @@ public ResponseEntity<?> createProduct(
             req.getId_category(),
             req.getId_User(),
             imagesBytes,
-            imagesContentTypes
+            imagesContentTypes,
+            req.getDescuento()
     );
 
     return ResponseEntity.ok(response);

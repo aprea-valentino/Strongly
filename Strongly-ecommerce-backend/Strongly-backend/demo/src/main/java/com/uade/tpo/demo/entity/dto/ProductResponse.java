@@ -18,4 +18,5 @@ public class ProductResponse {
 
      private byte[] image;
     private String imageContentType;
+    private BigDecimal descuento;
 }

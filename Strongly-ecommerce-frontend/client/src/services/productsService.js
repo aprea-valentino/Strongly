@@ -204,12 +204,12 @@ async function updateProduct(productId, productData) {
 }
 
 // Actualizar precio y stock a través del endpoint /updateProduct (backend espera {idProducto, precio, stock})
-async function updatePriceStock(idProducto, precio, stock, name, id_category) {
+async function updatePriceStock(idProducto, precio, stock, name, id_category, descuento) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
 
   try {
-    const payload = { idProducto, precio, stock };
+    const payload = { idProducto, precio, stock ,descuento};
     if (name !== undefined) payload.name = name;
     if (id_category !== undefined) payload.id_category = id_category;
 

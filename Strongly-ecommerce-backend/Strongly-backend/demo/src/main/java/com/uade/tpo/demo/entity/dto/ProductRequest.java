@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -42,6 +43,9 @@ public class ProductRequest {
     @JsonProperty("is_active")
     private Boolean is_active = true; // por si querés activarlo al crear
 
+    @DecimalMin("0.0")
+    @DecimalMax("100.0")
+    private BigDecimal descuento;
     // Eliminé el constructor que recibía Product:
     // mezclaba responsabilidades de request/response.
     // Si lo necesitás para devolver data, hacé un ProductResponse aparte.
