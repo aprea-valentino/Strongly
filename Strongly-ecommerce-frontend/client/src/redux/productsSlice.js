@@ -4,8 +4,8 @@ import { productsService } from '../services/productsService';
 export const fetchProducts = createAsyncThunk(
     'products/fetchProducts',
 
-    async () => {
-  const data = await productsService.getAllProducts();
+    async (searchQuery) => {
+  const data = await productsService.getAllProducts(searchQuery);
   return data; // Esto se convierte en action.payload si tiene éxito (fulfilled)
       }
 );

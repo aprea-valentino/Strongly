@@ -33,5 +33,7 @@ public interface ProductService {
     ProductResponse updateStock(Long productId, int newStock) throws ProductNotFoundException;
     */
 
-    ProductResponse updateProduct(UpdateProductRequest request) throws ProductNotFoundException;
+    ProductResponse updateProduct(UpdateProductRequest request) throws ProductNotFoundException, CategoryNotFoundException;
+    List<ProductResponseCategory> searchProductsByName(String nameQuery);
+
 }

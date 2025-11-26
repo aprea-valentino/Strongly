@@ -17,12 +17,12 @@ export default function Pago({ onClose, items, total }) {
 
   const handleBuy = () => {
     if (!province || !street || !postalCode || !cardNumber || !cardName || !cardExp || !cardCVV) {
-      alert("Completa todos los datos antes de continuar");
+      Swal.fire('Advertencia', 'Completa todos los datos antes de continuar', 'warning');
       return;
     }
     dispatch(cartCheckout());
 
-    alert("Compra realizada con éxito");
+    Swal.fire('Éxito', 'Compra realizada con éxito', 'success');
 
     onClose();
   };

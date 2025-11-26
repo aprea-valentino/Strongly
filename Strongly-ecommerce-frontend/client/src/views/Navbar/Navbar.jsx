@@ -1,81 +1,82 @@
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Search, ShoppingCart } from "lucide-react";
+import { AuthContext } from "../../context/AuthContext";
 import "./Navbar.css";
-import React, { useState, useContext } from 'react'; // Importa useState
-import { Link } from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
-import { FaShoppingCart, FaSearch } from 'react-icons/fa'; // Importa el ícono de búsqueda
-import { AuthContext } from '../../context/AuthContext';
-import { logout as serviceLogout } from '../../services/authService';
 
 export default function Navbar() {
-  // Estado para el texto que el usuario escribe en la barra de búsqueda
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const { user, logoutUser } = useContext(AuthContext);
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  // Obtener cantidad de items del carrito desde Redux
+  const cartItems = useSelector((state) => state.cart?.items ?? []);
+  const cartCount = cartItems.length;
+
+  // Obtener datos del usuario desde localStorage
+  const userEmail = localStorage.getItem("email");
+  const role = localStorage.getItem("role");
 
   const handleSearch = (e) => {
-    e.preventDefault(); // Evita que la página se recargue
-    
-    // Aquí iría la lógica real de búsqueda/filtrado:
-    // 1. Redireccionar a la página de resultados: navigate(`/search?q=${searchTerm}`);
-    // 2. Llamar a una función de contexto para filtrar productos.
-    
-    console.log("Buscando producto:", searchTerm);
-    setSearchTerm(''); //Al buscar, queda el campo libre
-    
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/products?q=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm("");
+    }
   };
-    const { user, logoutUser } = useContext(AuthContext);
-    const navigate = useNavigate();
 
-    // role stored in localStorage by the login flow
-    const role = localStorage.getItem("role"); // "ADMIN" o "BUYER"
-
-    const handleLogout = () => {
-      // Clear via service (in case other parts rely on it) and update context
-      serviceLogout();
-      if (logoutUser) logoutUser();
-      // Redirect to home after logout
-      navigate('/home');
-    };
+  const handleLogout = () => {
+    logoutUser(); // Usa logoutUser del AuthContext
+    navigate("/home");
+  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        
-        {/* Nombre del sitio / Logo */}
+
+        {/* LOGO */}
         <Link to="/home" className="navbar-logo-link">
           <h1 className="navbar-logo">STRONGLY</h1>
         </Link>
-        
-        {/* Barra de búsqueda */}
+
+        {/* BUSCADOR */}
         <form className="search-bar" onSubmit={handleSearch}>
-            <input
-                type="text"
-                placeholder="Buscar productos..."
-                value={searchTerm}
-                // Actualiza el estado con lo que el usuario escribe
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button type="submit" className="search-button">
-                <FaSearch />
-            </button>
+          <input
+            type="text"
+            placeholder="Buscar productos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button type="submit" className="search-button">
+            <Search size={20} />
+          </button>
         </form>
 
-        {/* Menú */}
+        {/* MENU */}
         <ul className="navbar-menu">
           <li><Link to="/products">Productos</Link></li>
           <li><Link to="/offers">Ofertas</Link></li>
-          
-          {!role && <li><Link to="/register">Login</Link></li>}
-        {role === "ADMIN" && <li><Link to="/admin">Administrar Productos</Link></li>}
-           {role === "BUYER" && <li><Link to="/cart"><FaShoppingCart /></Link></li>}
-          {/* Si hay usuario logueado mostramos botón para cerrar sesión */}
+
+          {!user && <li><Link to="/register">Login</Link></li>}
+          {role === "ADMIN" && <li><Link to="/admin">Administrar Productos</Link></li>}
+          {role === "BUYER" && (
+            <li>
+              <Link to="/cart" className="cart-link-wrapper">
+                <ShoppingCart size={24} />
+                {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
+              </Link>
+            </li>
+          )}
           {user && (
             <li>
-              {/* Enlace que actúa como logout: evita navegación por defecto y llama al handler */}
-              <a href="#" className="logout-link" onClick={(e) => { e.preventDefault(); handleLogout(); }}>
+              <button className="logout-link" onClick={handleLogout}>
                 Cerrar sesión
-              </a>
+              </button>
             </li>
           )}
         </ul>
+
       </div>
     </nav>
   );

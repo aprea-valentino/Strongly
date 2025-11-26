@@ -163,6 +163,19 @@ public class ProductServiceImpl implements ProductService {
             product.setStock(req.getStock());
         }
 
+        // Si viene nombre lo actualiza (y actualiza slug)
+        if (req.getName() != null && !req.getName().trim().isEmpty()) {
+            product.setName(req.getName());
+            product.setSlug(req.getName().trim().toLowerCase().replace(" ", "-"));
+        }
+
+        // Si viene id_category lo actualiza
+        if (req.getId_category() != null) {
+            Category category = categoryRepository.findById(req.getId_category())
+                    .orElseThrow(() -> new CategoryNotFoundException("La categoria " + req.getId_category() + " no existe"));
+            product.setCategory(category);
+        }
+
         Product updated = productRepository.save(product);
 
         return new ProductResponse(
@@ -173,7 +186,26 @@ public class ProductServiceImpl implements ProductService {
             updated.getStock()
         );
     }
+
+
+ @Override
+public List<ProductResponseCategory> searchProductsByName(String nameQuery) {
+
+    return productRepository.findByNameContainingIgnoreCase(nameQuery).stream()
+        .map(p -> new ProductResponseCategory(
+            p.getId(),
+            p.getName(),
+            p.getDescription(),
+            p.getPrice(),
+            p.getStock(),
+            p.getCategory() != null ? p.getCategory().getId() : null
+        ))
+        .toList();
+    }
+
 }
+
+
 /* 
     public List<ProductRequest> getProductsByCategory(Long categoryId) throws CategoryNotFoundException {
         

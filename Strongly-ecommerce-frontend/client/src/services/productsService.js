@@ -1,25 +1,28 @@
-
-const API_BASE = import.meta.env.VITE_API_BASE || '/api';
-const API_URL = `${API_BASE}/product`;
 // src/services/productsService.js
-
+const API_BASE = import.meta.env.VITE_API_BASE || "/api/v1";
+const API_URL = `${API_BASE}/product`;
 
 export const productsService = {
   getAllProducts,
   getProductsByCategory,
   getProductById,
   createProduct,
+  createProductWithImages,
   updatePrice,
-  updateStock
+  updateStock,
+  updateProduct,
+  updatePriceStock,
 };
 
-/**
- * Obtener todos los productos
- * @returns {Promise<Array>}
- */
-async function getAllProducts() {
+// Obtener todos los productos
+async function getAllProducts(searchQuery) {
   try {
-    const res = await fetch(`${API_URL}`);
+    let url = `${API_URL}`;
+    if (searchQuery) {
+      url += `?q=${encodeURIComponent(searchQuery)}`;
+    }
+
+    const res = await fetch(url);
     if (!res.ok) throw new Error(`Error ${res.status}`);
 
     return await res.json();
@@ -29,11 +32,7 @@ async function getAllProducts() {
   }
 }
 
-/**
- * Obtener productos por categoría
- * @param {number} categoryId 
- * @returns {Promise<Array>}
- */
+// Obtener productos por categoría
 async function getProductsByCategory(categoryId) {
   try {
     const res = await fetch(`${API_URL}/category/${categoryId}`);
@@ -45,15 +44,11 @@ async function getProductsByCategory(categoryId) {
   }
 }
 
-/**
- * Obtener producto por ID
- * @param {number} productId 
- * @returns {Promise<Object|null>}
- */
+// Obtener producto por ID
 async function getProductById(productId) {
   try {
     const res = await fetch(`${API_URL}/${productId}`);
-    if (res.status === 204) return null; // No content
+    if (res.status === 204) return null;
     if (!res.ok) throw new Error(`Error ${res.status}`);
     return await res.json();
   } catch (err) {
@@ -62,29 +57,26 @@ async function getProductById(productId) {
   }
 }
 
-/**
- * Crear un nuevo producto
- * @param {Object} productData 
- * @returns {Promise<Object>}
- */
+// Crear producto
 async function createProduct(productData) {
-    const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
 
   try {
-
     const res = await fetch(`${API_URL}`, {
       method: "POST",
-      headers: { "Content-Type": "application/json",
-         Authorization: `Bearer ${token}`
-       },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(productData),
-      
     });
+
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error(errorText);
     }
+
     return await res.json();
   } catch (err) {
     console.error("Error al crear producto:", err);
@@ -92,12 +84,33 @@ async function createProduct(productData) {
   }
 }
 
-/**
- * Actualizar precio de un producto
- * @param {number} idProducto 
- * @param {number} precio 
- * @returns {Promise<Object>}
- */
+// Crear producto con imágenes (multipart)
+async function createProductWithImages(formData) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+    const res = await fetch(`${API_URL}/multipart`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error al crear producto con imágenes:", err);
+    throw err;
+  }
+}
+
+// Actualizar precio
 async function updatePrice(idProducto, precio) {
   try {
     const res = await fetch(`${API_URL}/updatePrice`, {
@@ -113,12 +126,7 @@ async function updatePrice(idProducto, precio) {
   }
 }
 
-/**
- * Actualizar stock de un producto
- * @param {number} idProducto 
- * @param {number} stock 
- * @returns {Promise<Object>}
- */
+// Actualizar stock
 async function updateStock(idProducto, stock) {
   try {
     const res = await fetch(`${API_URL}/updateStock`, {
@@ -130,6 +138,64 @@ async function updateStock(idProducto, stock) {
     return await res.json();
   } catch (err) {
     console.error("Error al actualizar stock:", err);
+    throw err;
+  }
+}
+
+// Actualizar producto completo
+async function updateProduct(productId, productData) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+    const res = await fetch(`${API_URL}/${productId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(productData),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error al actualizar producto:", err);
+    throw err;
+  }
+}
+
+// Actualizar precio y stock a través del endpoint /updateProduct (backend espera {idProducto, precio, stock})
+async function updatePriceStock(idProducto, precio, stock, name, id_category) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+    const payload = { idProducto, precio, stock };
+    if (name !== undefined) payload.name = name;
+    if (id_category !== undefined) payload.id_category = id_category;
+
+    const res = await fetch(`${API_URL}/updateProduct`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error al actualizar precio/stock:", err);
     throw err;
   }
 }

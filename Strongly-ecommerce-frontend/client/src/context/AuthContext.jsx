@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
 
   const loginUser = (data) => {
     setUser({ token: data.token });
+    // El email, role, id ya están guardados en localStorage por authService.js
   };
 
   const logoutUser = () => {

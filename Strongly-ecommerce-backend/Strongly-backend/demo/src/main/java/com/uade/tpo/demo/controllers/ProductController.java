@@ -29,13 +29,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+// PreAuthorize removed from updateProduct; Security rules configured in SecurityConfig
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("/api/v1/product")
 public class ProductController {
 
     @Autowired
@@ -51,7 +52,11 @@ public class ProductController {
     private com.uade.tpo.demo.repository.ProductRepository productRepository;
 
     @GetMapping
-    public List<ProductResponseCategory> getAllProducts() {
+    public List<ProductResponseCategory> getAllProducts( 
+    @RequestParam (value = "q", required =false) String searchQuery){
+            if (searchQuery != null && !searchQuery.trim().isEmpty()) {
+                return productService.searchProductsByName(searchQuery);
+            }
         return productRepository.findAll().stream()
             .map(p -> new ProductResponseCategory(
                 p.getId(),
@@ -81,7 +86,7 @@ public class ProductController {
 //NUEVO UPDATE PRODUCT PRICE Y STOCK
 @PostMapping("/updateProduct")
 public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest req)
-        throws ProductNotFoundException {
+    throws ProductNotFoundException, CategoryNotFoundException {
 
     ProductResponse result = productService.updateProduct(req);
     return ResponseEntity.ok(result);

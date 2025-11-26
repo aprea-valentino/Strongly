@@ -5,9 +5,12 @@ import "./Products.css";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../redux/productsSlice.js";
 import { fetchCategories } from "../../redux/CategoriesSlice.js";
+import { useSearchParams } from 'react-router-dom';
 
 export default function Products() {
   const dispatch = useDispatch();
+   const [searchParams] = useSearchParams();
+    const searchQuery = searchParams.get('q');
 
   // productos
   const productsState = useSelector((state) => state.products);
@@ -24,9 +27,9 @@ export default function Products() {
 
   // cargar datos
   useEffect(() => {
-    dispatch(fetchProducts());
+    dispatch(fetchProducts(searchQuery));
     dispatch(fetchCategories());
-  }, [dispatch]);
+  }, [dispatch, searchQuery]);
 
   // cuando se selecciona/deselecciona una categoría
   const handleCategorySelect = (categoryId, checked) => {

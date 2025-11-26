@@ -2,6 +2,8 @@ import {configureStore} from '@reduxjs/toolkit';
 import productsReducer from './productsSlice';
 import categoriesReducer from "./CategoriesSlice";
 import cartReducer from "./CartSlice";
+import authReducer from "./authSlice";
+import userReducer from "./userSlice";
 
 //en Reducer van todos los estados globales
 
@@ -11,6 +13,8 @@ export const store = configureStore({
         products: productsReducer,
         categories: categoriesReducer,
         cart:cartReducer,
+        auth: authReducer,
+        user: userReducer,
      }
 })
 

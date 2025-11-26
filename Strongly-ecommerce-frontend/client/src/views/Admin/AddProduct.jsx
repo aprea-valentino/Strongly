@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { productsService } from "../../services/productsService"; 
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "../../redux/CategoriesSlice";
@@ -46,11 +47,13 @@ useEffect(() => {
 
       setIsEditing(true);
       setFormData({
-        title: product.title,
-        description: product.description,
-        price: parseFloat(product.price),
-        stock: parseInt(product.stock),
-        categoryId: parseInt(product.categoryId),
+        // backend returns `name` (not `title`), use it to prefill the title input
+        title: product.name || product.title || "",
+        description: product.description || "",
+        price: product.price ? parseFloat(product.price) : "",
+        stock: product.stock ? parseInt(product.stock) : "",
+        // ProductResponse may not include category id; leave empty if not provided
+        categoryId: product.categoryid ? parseInt(product.categoryid) : (product.categoryId ? parseInt(product.categoryId) : ""),
         imageFile: null
       });
 
@@ -81,7 +84,7 @@ useEffect(() => {
     try {
 
       const payload = {
-  name: formData.title,
+  title: formData.title,
   description: formData.description,
   price: parseFloat(formData.price),
   stock: parseInt(formData.stock),
@@ -93,8 +96,14 @@ useEffect(() => {
       console.log(payload)
 
       if (isEditing) {
-        await productsService.updatePrice(productIdToEdit, payload.price);
-        await productsService.updateStock(productIdToEdit, payload.stock);
+        // backend provides a combined update endpoint: /product/updateProduct (accepts idProducto, precio, stock, optionally name and id_category)
+        await productsService.updatePriceStock(
+          parseInt(productIdToEdit),
+          payload.price,
+          payload.stock,
+          payload.title, // name
+          payload.id_category
+        );
         console.log('Producto editado correctamente');
       } else {
         await productsService.createProduct(payload);
@@ -104,7 +113,7 @@ useEffect(() => {
       navigate('/admin/manage');
     } catch (err) {
       console.error('Error al guardar producto:', err);
-      alert(err.message);
+      Swal.fire('Error', err.message, 'error');
     } finally {
       setLoading(false);
     }
