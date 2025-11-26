@@ -20,6 +20,7 @@ import com.uade.tpo.demo.repository.CategoryRepository;
 import com.uade.tpo.demo.repository.ProductRepository;
 import com.uade.tpo.demo.repository.UserRepository;
 import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
+import com.uade.tpo.demo.entity.ProductImage;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -35,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
 
 
     // --------------------- GET PRODUCTS ---------------------
+  /*
     @Override
     public Page<ProductResponseCategory> getProduct(Pageable pageable) {
         return productRepository.findAll(pageable).map(p -> new ProductResponseCategory(
@@ -47,18 +49,62 @@ public class ProductServiceImpl implements ProductService {
 
             ));
     }
+*/
 
-    @Override
-    public Optional<ProductResponse> getProductById(Long productId) {
-        return productRepository.findById(productId)
-            .map(p -> new ProductResponse(
+@Override
+public Page<ProductResponseCategory> getProduct(Pageable pageable) {
+
+    return productRepository.findAll(pageable).map(p -> {
+
+        byte[] imageBytes = null;
+        String contentType = null;
+
+        if (p.getImages() != null && !p.getImages().isEmpty()) {
+            ProductImage img = p.getImages().get(0); // primera imagen
+            imageBytes = img.getImage();
+            contentType = img.getImageContentType();
+        }
+
+        return new ProductResponseCategory(
                 p.getId(),
                 p.getName(),
                 p.getDescription(),
                 p.getPrice(),
-                p.getStock()
-            ));
-    }
+                p.getStock(),
+                p.getCategory() != null ? p.getCategory().getId() : null,
+                imageBytes,
+                contentType
+        );
+    });
+}
+
+   @Override
+public Optional<ProductResponse> getProductById(Long productId) {
+
+    return productRepository.findProductImageById(productId)
+            .map(p -> {
+
+                byte[] imageBytes = null;
+                String contentType = null;
+
+                if (p.getImages() != null && !p.getImages().isEmpty()) {
+                    ProductImage img = p.getImages().get(0);
+                    imageBytes = img.getImage();
+                    contentType = img.getImageContentType();
+                }
+
+                return new ProductResponse(
+                        p.getId(),
+                        p.getName(),
+                        p.getDescription(),
+                        p.getPrice(),
+                        p.getStock(),
+                        imageBytes,
+                        contentType
+                );
+            });
+}
+
 
     @Override
     public List<ProductResponse> getProductsByCategory(Long categoryId) {
@@ -68,44 +114,70 @@ public class ProductServiceImpl implements ProductService {
                 p.getName(),
                 p.getDescription(),
                 p.getPrice(),
-                p.getStock()
+                p.getStock(),
+                null,
+                null
             ))
             .toList();
         }
 
     // --------------------- CREATE ---------------------
-    @Override
-    public ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user)
-            throws ProductDuplicateException, CategoryNotFoundException {
+ @Override
+public ProductResponse createProduct(
+        String name,
+        String description,
+        int stock,
+        BigDecimal price,
+        long category_id,
+        long id_user,
+        List<byte[]> imagesBytes,
+        List<String> imagesContentTypes
+) throws ProductDuplicateException, CategoryNotFoundException {
 
-        if (!productRepository.findByname(name).isEmpty()) {
-            throw new ProductDuplicateException();
+    if (!productRepository.findByname(name).isEmpty()) {
+        throw new ProductDuplicateException();
+    }
+
+    Category category = categoryRepository.findById(category_id)
+            .orElseThrow(() -> new CategoryNotFoundException("La categoria " + category_id + " no existe"));
+
+    User creator = userRepository.findById(id_user).orElse(null);
+
+    Product p = new Product();
+    p.setName(name);
+    p.setDescription(description);
+    p.setPrice(price);
+    p.setStock(stock);
+    p.setSlug(name.trim().toLowerCase().replace(" ", "-"));
+    p.setCategory(category);
+
+    if (creator != null) p.setCreatedBy(creator);
+
+    // Agregar imágenes
+    if (imagesBytes != null && !imagesBytes.isEmpty()) {
+        for (int i = 0; i < imagesBytes.size(); i++) {
+            ProductImage pi = new ProductImage();
+            pi.setImage(imagesBytes.get(i));
+            pi.setImageContentType(imagesContentTypes.get(i));
+            pi.setProduct(p);
+            p.getImages().add(pi);
         }
+    }
 
-        Category category = categoryRepository.findById(category_id)
-                .orElseThrow(() -> new CategoryNotFoundException("La categoria " + category_id + " no existe"));
+    Product saved = productRepository.save(p);
 
-        User creator = userRepository.findById(id_user).orElse(null);
-
-        Product p = new Product();
-        p.setName(name);
-        p.setDescription(description);
-        p.setPrice(price);
-        p.setStock(stock);
-        p.setSlug(name.trim().toLowerCase().replace(" ", "-"));
-        p.setCategory(category);
-        if (creator != null) p.setCreatedBy(creator);
-
-        Product saved = productRepository.save(p);
-
-        return new ProductResponse(
+    return new ProductResponse(
             saved.getId(),
             saved.getName(),
             saved.getDescription(),
             saved.getPrice(),
-            saved.getStock()
-        );
-    }
+            saved.getStock(),
+            null,
+            null
+    );
+}
+
+
 
     // --------------------- UPDATE ---------------------
     /* ESTE ES EL UPDATE DE PRICE Y STOCK SEPARADOS
@@ -183,7 +255,9 @@ public class ProductServiceImpl implements ProductService {
             updated.getName(),
             updated.getDescription(),
             updated.getPrice(),
-            updated.getStock()
+            updated.getStock(),
+            null,
+            null
         );
     }
 
@@ -198,7 +272,9 @@ public List<ProductResponseCategory> searchProductsByName(String nameQuery) {
             p.getDescription(),
             p.getPrice(),
             p.getStock(),
-            p.getCategory() != null ? p.getCategory().getId() : null
+            p.getCategory() != null ? p.getCategory().getId() : null,
+            null,
+            null
         ))
         .toList();
     }

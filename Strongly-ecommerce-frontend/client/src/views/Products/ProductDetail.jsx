@@ -50,11 +50,22 @@ export default function ProductDetail() {
   if (loading) return <p className="loading">Cargando producto...</p>;
   if (error) return <p className="errorrrr">{error}</p>;
   if (!product) return <p className="empty">No se encontró el producto.</p>;
+const imageSrc = product.image
+  ? `data:${product.contentType};base64,${product.image}`
+  : null;
 
   return (
+    
     <div className="product-detail-container">
 
       <div className="product-card">
+          {product.image && (
+        <img
+          src={`data:${product.contentType};base64,${product.image}`}
+          alt={product.name}
+          className="product-image"
+        />
+      )}
         <div className="product-info">
           <h2>{product.name}</h2>
           <p className="description">{product.description}</p>

@@ -16,4 +16,7 @@ public class ProductResponseCategory {
     private BigDecimal price;
     private Integer stock;
     private Long categoryid;
+
+     private byte[] image;
+    private String imageContentType;
 }

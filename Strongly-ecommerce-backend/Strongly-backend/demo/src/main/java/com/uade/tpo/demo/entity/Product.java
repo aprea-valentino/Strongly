@@ -1,10 +1,13 @@
 package com.uade.tpo.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,8 +49,9 @@ public class Product {
     @JoinColumn(name="created_by")
     private User createdBy;
 
+ 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProductImage> images;
+    private List<ProductImage> images = new ArrayList<>();
 
     // 👇 Evitar recursión: no serializar colecciones inversas
     @OneToMany(mappedBy = "product")

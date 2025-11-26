@@ -56,10 +56,11 @@ export default function Products() {
   });
 
   // ordenar si eligió asc o desc
+
   const finalProducts = [...filtered];
   if (sortOrder === "asc") finalProducts.sort((a, b) => a.price - b.price);
   if (sortOrder === "desc") finalProducts.sort((a, b) => b.price - a.price);
-
+console.log(finalProducts)
   return (
     <div className="products-page-container">
       <Sidebar

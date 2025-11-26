@@ -24,7 +24,7 @@ public interface ProductService {
 
     List<ProductResponse> getProductsByCategory(Long categoryId) throws CategoryNotFoundException;
 
-    ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user)
+    ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user, List<byte[]> imagesBytes,List<String> imagesContentTypes)
             throws ProductDuplicateException, CategoryNotFoundException;
 
     /* ESTOS DOS PASAN A SER PARTE DE updateProduct

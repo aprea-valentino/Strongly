@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.uade.tpo.demo.entity.Category;
 import com.uade.tpo.demo.entity.Product;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
@@ -19,4 +20,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByCategoryId(Long categoryId);
 
     List<Product> findByNameContainingIgnoreCase(String name);
+
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.images")
+List<Product> findAllWithImages();
+
+@Query("SELECT p FROM Product p LEFT JOIN FETCH p.images WHERE p.id = ?1")
+Optional<Product> findProductImageById(Long id);
+
+
 }
