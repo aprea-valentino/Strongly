@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { clearUserCart,cartCheckout } from "../../redux/CartSlice";
+import Swal from "sweetalert2";
+import { clearUserCart, cartCheckout } from "../../redux/CartSlice";
 import "./Pago.css";
 
 export default function Pago({ onClose, items, total }) {
@@ -15,16 +16,64 @@ export default function Pago({ onClose, items, total }) {
   const [cardExp, setCardExp] = useState("");
   const [cardCVV, setCardCVV] = useState("");
 
-  const handleBuy = () => {
+  const handleBuy = async () => {
+    // Validar que todos los campos estén completos
     if (!province || !street || !postalCode || !cardNumber || !cardName || !cardExp || !cardCVV) {
-      Swal.fire('Advertencia', 'Completa todos los datos antes de continuar', 'warning');
+      Swal.fire({
+        title: 'Datos incompletos',
+        text: 'Por favor, completa todos los campos antes de continuar',
+        icon: 'warning',
+        confirmButtonColor: '#08471f'
+      });
       return;
     }
-    dispatch(cartCheckout());
 
-    Swal.fire('Éxito', 'Compra realizada con éxito', 'success');
+    // Alerta de confirmación
+    const result = await Swal.fire({
+      title: '¿Confirmar compra?',
+      html: `
+        <div style="text-align: left; margin: 20px 0;">
+          <p><strong>Total a pagar:</strong> $${Number(total).toFixed(2)}</p>
+          <p><strong>Dirección de envío:</strong> ${street}, ${province} (${postalCode})</p>
+          <p><strong>Tarjeta:</strong> **** **** **** ${cardNumber.slice(-4)}</p>
+        </div>
+      `,
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#08471f',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, confirmar compra',
+      cancelButtonText: 'Cancelar'
+    });
 
-    onClose();
+    if (result.isConfirmed) {
+      try {
+        await dispatch(cartCheckout()).unwrap();
+        
+        Swal.fire({
+          title: '¡Compra realizada con éxito!',
+          html: `
+            <div style="text-align: center; margin: 20px 0;">
+              <p style="font-size: 3rem; margin: 20px 0;">🎉</p>
+              <p>Tu pedido ha sido procesado correctamente</p>
+              <p style="margin-top: 15px; color: #666;">Recibirás un correo con los detalles de tu compra</p>
+            </div>
+          `,
+          icon: 'success',
+          confirmButtonColor: '#08471f',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          onClose();
+        });
+      } catch (error) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Hubo un problema al procesar tu compra. Por favor, intenta nuevamente.',
+          icon: 'error',
+          confirmButtonColor: '#08471f'
+        });
+      }
+    }
   };
 
   const handleCancel = () => {
