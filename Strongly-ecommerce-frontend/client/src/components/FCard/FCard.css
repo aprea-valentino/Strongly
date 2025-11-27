@@ -1,40 +1,82 @@
 .FCard {
-  background-color: #635f5f;
-  color: var(--text-primary);
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 90vw; /* 90% del ancho de la ventana */
+  background: linear-gradient(135deg, #08471f 0%, #0a5a28 50%, #0d6e32 100%);
+  color: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  width: 90vw;
   max-width: 1650px;
   margin: 0 auto;
-  height: 440px; /* Dobla el alto aproximado */
+  height: 440px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* centra contenido verticalmente */
-  align-items: center;     /* 👈 centra el contenido horizontalmente */
-  text-align: center;      /* 👈 centra el texto dentro del contenido */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(8, 71, 31, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 3px solid #0a5a28;
+  position: relative;
+  overflow: hidden;
+}
+
+.FCard::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .FCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.7);
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 15px 45px rgba(8, 71, 31, 0.5);
+  border-color: #0d6e32;
 }
 
 .FCard-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
 }
 
 .FCard-description {
-  font-size: 0.95rem;
-  margin-bottom: 1rem;
-  color: #ccc;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #e8f5e9;
+  max-width: 800px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
 }
 
 .FCard-price {
-  font-weight: 600;
+  font-weight: 800;
+  font-size: 2rem;
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 12px 24px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.FCard-price .text-gray-400 {
+  color: #c8e6c9 !important;
+  text-decoration: line-through;
+  margin-right: 12px;
+  font-size: 1.5rem;
+}
+
+.FCard-price .text-red-500 {
+  color: #ffeb3b !important;
+  font-weight: 900;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }

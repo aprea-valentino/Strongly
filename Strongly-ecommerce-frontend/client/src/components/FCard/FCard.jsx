@@ -12,7 +12,15 @@ export default function FeaturedCard({ nombre, descripcion, precioOriginal, prec
           src={imageSrc}
           alt={nombre}
           className="FCard-img rounded-md mb-3"
-          style={{ width: "100%", height: "200px", objectFit: "cover" }}
+          style={{ 
+            width: "100%", 
+            maxWidth: "400px",
+            height: "250px", 
+            objectFit: "cover",
+            borderRadius: "12px",
+            boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
+            border: "3px solid rgba(255,255,255,0.3)"
+          }}
         />
       )}
 
