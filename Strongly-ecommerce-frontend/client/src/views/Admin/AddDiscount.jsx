@@ -20,8 +20,8 @@ export default function AddDiscount() {
         if (productId) {
           const data = await productsService.getProductById(productId);
           setProduct(data);
-          if (data.discount) {
-            setDiscount(data.discount);
+          if (data.descuento) {
+            setDiscount(data.descuento);
           }
         }
         setLoading(false);
@@ -45,8 +45,7 @@ export default function AddDiscount() {
     }
 
     try {
-      // Aquí deberías llamar al servicio para actualizar el descuento
-      // await productsService.updateDiscount(productId, discountValue);
+      await productsService.updateDiscount(productId, discountValue);
       
       Swal.fire({
         title: "Éxito",
@@ -78,7 +77,7 @@ export default function AddDiscount() {
         <div>
           <h2>{product.name}</h2>
           <p>Precio: ${product.price}</p>
-          {product.discount > 0 && <p>Descuento actual: {product.discount}%</p>}
+          {product.descuento > 0 && <p>Descuento actual: {product.descuento}%</p>}
         </div>
       </div>
 

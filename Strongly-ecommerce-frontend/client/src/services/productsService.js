@@ -12,6 +12,7 @@ export const productsService = {
   updateStock,
   updateProduct,
   updatePriceStock,
+  updateDiscount,
 };
 
 // Obtener todos los productos
@@ -230,6 +231,38 @@ async function updatePriceStock(idProducto, precio, stock, name, id_category, de
     return await res.json();
   } catch (err) {
     console.error("Error al actualizar precio/stock:", err);
+    throw err;
+  }
+}
+
+// Actualizar solo el descuento de un producto
+async function updateDiscount(idProducto, descuento) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+    const payload = { 
+      idProducto, 
+      descuento: parseFloat(descuento)
+    };
+
+    const res = await fetch(`${API_URL}/updateProduct`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error("Error al actualizar descuento:", err);
     throw err;
   }
 }

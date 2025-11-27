@@ -66,12 +66,12 @@ export default function PaginaDescuentos() {
                   Descuento Actual:{" "}
                   <span
                     className={
-                      product.discount && product.discount > 0
+                      product.descuento && product.descuento > 0
                         ? "discount-active"
                         : "discount-inactive"
                     }
                   >
-                    {product.discount || 0}%
+                    {product.descuento || 0}%
                   </span>
                 </span>
               </div>
@@ -90,7 +90,7 @@ export default function PaginaDescuentos() {
                   onClick={() =>
                     handleDiscountAction("modify", product.id, product.name)
                   }
-                  disabled={!product.discount || product.discount === 0}
+                  disabled={!product.descuento || product.descuento === 0}
                 >
                   Modificar
                 </button>
@@ -99,7 +99,7 @@ export default function PaginaDescuentos() {
                   onClick={() =>
                     handleDiscountAction("delete", product.id, product.name)
                   }
-                  disabled={!product.discount || product.discount === 0}
+                  disabled={!product.descuento || product.descuento === 0}
                 >
                   Eliminar
                 </button>
