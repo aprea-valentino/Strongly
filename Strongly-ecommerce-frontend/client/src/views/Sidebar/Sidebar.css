@@ -76,3 +76,75 @@
     color: #555;
     margin-right: 5px;
 }
+
+/* Filtro de rango de precios */
+.price-range-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.price-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.price-input-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0;
+}
+
+.price-input {
+    width: calc(100% - 10px);
+    max-width: 160px;
+    padding: 8px 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #333;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.price-input:focus {
+    outline: none;
+    border-color: #08471f;
+    box-shadow: 0 0 0 3px rgba(8, 71, 31, 0.1);
+}
+
+.price-input::placeholder {
+    color: #999;
+}
+
+/* Remove arrows from number input */
+.price-input::-webkit-inner-spin-button,
+.price-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.price-input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.clear-price-btn {
+    padding: 8px 12px;
+    background: #f8f9fa;
+    color: #08471f;
+    border: 1px solid #08471f;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 5px;
+}
+
+.clear-price-btn:hover {
+    background: #08471f;
+    color: white;
+}

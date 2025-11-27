@@ -24,6 +24,7 @@ export default function Products() {
   // filtros seleccionados
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [sortOrder, setSortOrder] = useState(null);
+  const [priceRange, setPriceRange] = useState({ min: "", max: "" });
 
   // cargar datos
   useEffect(() => {
@@ -44,15 +45,33 @@ export default function Products() {
     setSortOrder(order);
   };
 
+  const handlePriceRangeChange = (min, max) => {
+    setPriceRange({ min, max });
+  };
+
   const filtered = items.filter((p) => {
 
     if ((p.stock ?? 0) <= 0) return false;
 
-    // si no seleccionó categorías -> mostrar todo
-    if (selectedCategories.length === 0) return true;
+    // Filtro por categoría
+    if (selectedCategories.length > 0 && !selectedCategories.includes(p.categoryid)) {
+      return false;
+    }
 
-    // producto pertenece a una categoría seleccionada
-    return selectedCategories.includes(p.categoryid);
+    // Filtro por rango de precios (usando precio con descuento)
+    let finalPrice = Number(p.price);
+    if (p.descuento && Number(p.descuento) > 0) {
+      finalPrice = finalPrice - (finalPrice * Number(p.descuento) / 100);
+    }
+    
+    const minPrice = priceRange.min ? Number(priceRange.min) : 0;
+    const maxPrice = priceRange.max ? Number(priceRange.max) : Infinity;
+
+    if (finalPrice < minPrice || finalPrice > maxPrice) {
+      return false;
+    }
+
+    return true;
   });
 
   // ordenar si eligió asc o desc
@@ -67,6 +86,7 @@ console.log(finalProducts)
         categories={categories}
         onCategorySelect={handleCategorySelect}
         onSortChange={handleSortChange}
+        onPriceRangeChange={handlePriceRangeChange}
       />
 
       <div className="products-main-content">
