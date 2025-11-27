@@ -70,13 +70,14 @@
 }
 
 .product-pricing {
-    margin-right: 20px;
+    margin-right: 30px;
+    margin-left: 20px;
 }
 
 .product-price {
-    font-weight: 700;
-    color: #08471f; /* Verde oscuro */
-    font-size: 1.1rem;
+    font-weight: 700 !important;
+    color: #08471f !important; /* Verde oscuro */
+    font-size: 1.1rem !important;
 }
 
 /* ------------------------------------------------ */
