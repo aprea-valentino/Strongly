@@ -55,26 +55,80 @@ const imageSrc = product.image
   : null;
 
   return (
-    
     <div className="product-detail-container">
+      <div className="product-detail-wrapper">
+        {/* Columna Izquierda - Imagen */}
+        <div className="product-image-section">
+          {product.image ? (
+            <img
+              src={`data:${product.contentType};base64,${product.image}`}
+              alt={product.name}
+              className="product-image"
+            />
+          ) : (
+            <div className="no-image">Sin imagen</div>
+          )}
+        </div>
 
-      <div className="product-card">
-          {product.image && (
-        <img
-          src={`data:${product.contentType};base64,${product.image}`}
-          alt={product.name}
-          className="product-image"
-        />
-      )}
-        <div className="product-info">
-          <h2>{product.name}</h2>
-          <p className="description">{product.description}</p>
-          <h3>${product.price}</h3>
-          <p className="stock">Stock disponible: {product.stock}</p>
+        {/* Columna Derecha - Información */}
+        <div className="product-info-section">
+          <div className="product-category">
+            <span className="category-badge">Producto Premium</span>
+          </div>
+          
+          <h1 className="product-title">{product.name}</h1>
+          
+          <div className="product-price-section">
+            {product.descuento > 0 ? (
+              <>
+                <div className="price-container">
+                  <span className="product-price-original">${product.price}</span>
+                  <span className="product-price">${(product.price - (product.price * product.descuento / 100)).toFixed(2)}</span>
+                </div>
+                <span className="discount-badge">-{product.descuento}% OFF</span>
+              </>
+            ) : (
+              <span className="product-price">${product.price}</span>
+            )}
+          </div>
 
-          <button className="add-btn" onClick={handleAddToCart}>
-            Agregar al carrito 🛒
+          <div className="product-stock">
+            <span className="stock-icon">✅</span>
+            <span className="stock-text">
+              {product.stock > 0 
+                ? `${product.stock} unidades disponibles` 
+                : 'Sin stock'}
+            </span>
+          </div>
+
+          <div className="product-description">
+            <h3>Descripción</h3>
+            <p>{product.description}</p>
+          </div>
+
+          <button 
+            className="add-to-cart-btn" 
+            onClick={handleAddToCart}
+            disabled={product.stock === 0}
+          >
+            <span className="btn-icon">🛍️</span>
+            Agregar al carrito
           </button>
+
+          <div className="product-benefits">
+            <div className="benefit-item">
+              <span>🚚</span>
+              <span>Envío gratis</span>
+            </div>
+            <div className="benefit-item">
+              <span>🔒</span>
+              <span>Compra segura</span>
+            </div>
+            <div className="benefit-item">
+              <span>↩️</span>
+              <span>Devolución gratis</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
