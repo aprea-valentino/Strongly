@@ -1,26 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Swal from 'sweetalert2';
 import "./PaginaDescuentos.css";
 import { useNavigate } from "react-router-dom";
-import { productsService } from "../../services/productsService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts, updateDiscount } from "../../redux/productsSlice";
 
 export default function PaginaDescuentos() {
-  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { items: products, loading, error } = useSelector((state) => state.products);
 
-  // 🔹 Cargar productos reales desde el backend
+  // 🔹 Cargar productos desde Redux
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await productsService.getAllProducts();
-        setProducts(data);
-      } catch (err) {
-        console.error("Error al cargar productos:", err);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   // 🔹 Función para manejar las acciones del descuento
   const handleDiscountAction = async (action, id, name) => {
@@ -40,13 +33,7 @@ export default function PaginaDescuentos() {
 
       if (result.isConfirmed) {
         try {
-          await productsService.updateDiscount(id, 0);
-          
-          // Actualizar la lista de productos
-          const updatedProducts = products.map(product => 
-            product.id === id ? { ...product, descuento: 0 } : product
-          );
-          setProducts(updatedProducts);
+          await dispatch(updateDiscount({ productId: id, discount: 0 })).unwrap();
           
           Swal.fire('Eliminado', `Descuento de ${name} eliminado correctamente.`, 'success');
         } catch (err) {

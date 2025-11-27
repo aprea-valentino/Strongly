@@ -1,38 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts } from "../redux/productsSlice";
 import ListCards from "../components/ListCards/ListCards";
 import FeaturedCard from "../components/FCard/FCard";
 import "../App.css";
-import { productsService } from "../services/productsService";
 
 export default function Home() {
-  const [productos, setProductos] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
+  const dispatch = useDispatch();
+  const { items: productos, loading: cargando, error } = useSelector((state) => state.products);
 
   useEffect(() => {
-      setCargando(true);
-      setError(null);
-      productsService.getAllProducts()
-        .then(data => {
-          setProductos(data);
-          setError(null); // Asegurar que se limpia cualquier error anterior
-        })
-
-        .catch(err => {
-                console.error("Error al cargar productos:", err);
-                setError("No se pudieron cargar los productos");
-              })
-
-        .finally(() => {
-          setCargando(false);
-        });
-
-      
-    }, []);
-
-    
-  
+    // Solo cargar productos si no están en el estado
+    if (productos.length === 0) {
+      dispatch(fetchProducts());
+    }
+  }, [dispatch, productos.length]);
 
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;

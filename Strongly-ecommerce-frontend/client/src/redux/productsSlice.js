@@ -57,6 +57,42 @@ export const updateProduct = createAsyncThunk(
   }
 );
 
+export const deleteProduct = createAsyncThunk(
+  "products/deleteProduct",
+  async (productId, { rejectWithValue }) => {
+    try {
+      await productsService.deleteProduct(productId);
+      return productId;
+    } catch (err) {
+      return rejectWithValue(err.message || "Error al eliminar producto");
+    }
+  }
+);
+
+export const updateDiscount = createAsyncThunk(
+  "products/updateDiscount",
+  async ({ productId, discount }, { rejectWithValue }) => {
+    try {
+      const updated = await productsService.updateDiscount(productId, discount);
+      return updated;
+    } catch (err) {
+      return rejectWithValue(err.message || "Error al actualizar descuento");
+    }
+  }
+);
+
+export const fetchProductById = createAsyncThunk(
+  "products/fetchProductById",
+  async (productId, { rejectWithValue }) => {
+    try {
+      const product = await productsService.getProductById(productId);
+      return product;
+    } catch (err) {
+      return rejectWithValue(err.message || "Error al obtener producto");
+    }
+  }
+);
+
 const productsSlice = createSlice({
     name: 'products',
     initialState:{
@@ -104,7 +140,55 @@ const productsSlice = createSlice({
             state.loading= false,
             state.error=action.error.message
         })
-      ;
+      // DELETE PRODUCT
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.items = state.items.filter((p) => p.id !== action.payload);
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      // UPDATE DISCOUNT
+      .addCase(updateDiscount.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateDiscount.fulfilled, (state, action) => {
+        state.loading = false;
+        const index = state.items.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(updateDiscount.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      })
+      // FETCH PRODUCT BY ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.productosId = action.payload;
+        // También actualizar en items si ya existe
+        const index = state.items.findIndex((p) => p.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        } else {
+          state.items.push(action.payload);
+        }
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || action.error.message;
+      });
       
 }});
 

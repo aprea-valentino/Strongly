@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import './manage.css';
 import { useNavigate } from 'react-router-dom';
-import { productsService } from "../../services/productsService";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchProducts, deleteProduct } from "../../redux/productsSlice";
 import { fetchCategories } from "../../redux/CategoriesSlice";
 
 export default function Manage() {
-  const [products, setProducts] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState(null);
   const [featuredProductId, setFeaturedProductId] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
+  const { items: products, loading: cargando, error } = useSelector((state) => state.products);
   const { items: categories } = useSelector((state) => state.categories);
 
   // 🔹 Cargar el ID del producto destacado desde localStorage
@@ -23,29 +22,11 @@ export default function Manage() {
     }
   }, []);
 
-  // 🔹 Cargar categorías
+  // 🔹 Cargar categorías y productos
   useEffect(() => {
     dispatch(fetchCategories());
+    dispatch(fetchProducts());
   }, [dispatch]);
-
-  // 🔹 Cargar productos reales al montar el componente
-  useEffect(() => {
-    const cargarProductos = async () => {
-      setCargando(true);
-      setError(null);
-      try {
-        const data = await productsService.getAllProducts(); // ✅ Llama al endpoint /product
-        setProducts(data);
-      } catch (err) {
-        console.error('Error al cargar productos:', err);
-        setError('No se pudieron cargar los productos.');
-      } finally {
-        setCargando(false);
-      }
-    };
-
-    cargarProductos();
-  }, []);
 
   // 🔹 Eliminar producto
   const handleDelete = async (id, name) => {
@@ -62,8 +43,7 @@ export default function Manage() {
 
     if (result.isConfirmed) {
       try {
-        await productsService.deleteProduct(id);
-        setProducts((prev) => prev.filter((p) => p.id !== id));
+        await dispatch(deleteProduct(id)).unwrap();
         Swal.fire({
           title: '¡Eliminado!',
           text: 'El producto ha sido eliminado correctamente.',
@@ -72,7 +52,7 @@ export default function Manage() {
         });
       } catch (err) {
         console.error(err);
-        const errorMessage = err.message || 'No se pudo eliminar el producto.';
+        const errorMessage = err || 'No se pudo eliminar el producto.';
         Swal.fire({
           title: 'Error',
           text: errorMessage,

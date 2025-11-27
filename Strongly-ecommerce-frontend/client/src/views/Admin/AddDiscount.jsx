@@ -1,39 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { productsService } from "../../services/productsService";
+import { fetchProductById, updateDiscount } from "../../redux/productsSlice";
 import "./AddDiscount.css";
 
 export default function AddDiscount() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const productId = searchParams.get("product");
   const action = searchParams.get("action");
 
-  const [product, setProduct] = useState(null);
+  const { productosId: product, loading } = useSelector((state) => state.products);
   const [discount, setDiscount] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        if (productId) {
-          const data = await productsService.getProductById(productId);
-          setProduct(data);
+    if (productId) {
+      dispatch(fetchProductById(productId))
+        .unwrap()
+        .then((data) => {
           if (data.descuento) {
             setDiscount(data.descuento);
           }
-        }
-        setLoading(false);
-      } catch (err) {
-        console.error("Error al cargar el producto:", err);
-        Swal.fire("Error", "No se pudo cargar el producto", "error");
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [productId]);
+        })
+        .catch((err) => {
+          console.error("Error al cargar el producto:", err);
+          Swal.fire("Error", "No se pudo cargar el producto", "error");
+        });
+    }
+  }, [productId, dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +41,7 @@ export default function AddDiscount() {
     }
 
     try {
-      await productsService.updateDiscount(productId, discountValue);
+      await dispatch(updateDiscount({ productId, discount: discountValue })).unwrap();
       
       Swal.fire({
         title: "Éxito",
