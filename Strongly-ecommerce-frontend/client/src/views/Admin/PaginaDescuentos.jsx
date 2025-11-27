@@ -23,25 +23,37 @@ export default function PaginaDescuentos() {
   }, []);
 
   // 🔹 Función para manejar las acciones del descuento
-  const handleDiscountAction = (action, id, name) => {
+  const handleDiscountAction = async (action, id, name) => {
     console.log(`Acción: ${action} en Producto: ${name} (ID: ${id})`);
 
     if (action === "add" || action === "modify") {
-      // Podrías redirigir a una página de edición o abrir un modal
       navigate(`/admin/discount?product=${id}&action=${action}`);
     } else if (action === "delete") {
-      Swal.fire({
+      const result = await Swal.fire({
         title: '¿Estás seguro?',
         text: `¿Seguro que quieres eliminar el descuento de ${name}?`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire('Eliminado', `Descuento de ${name} eliminado (simulación).`, 'success');
-        }
       });
+
+      if (result.isConfirmed) {
+        try {
+          await productsService.updateDiscount(id, 0);
+          
+          // Actualizar la lista de productos
+          const updatedProducts = products.map(product => 
+            product.id === id ? { ...product, descuento: 0 } : product
+          );
+          setProducts(updatedProducts);
+          
+          Swal.fire('Eliminado', `Descuento de ${name} eliminado correctamente.`, 'success');
+        } catch (err) {
+          console.error("Error al eliminar descuento:", err);
+          Swal.fire('Error', 'No se pudo eliminar el descuento', 'error');
+        }
+      }
     }
   };
 

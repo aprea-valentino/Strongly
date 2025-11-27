@@ -1,12 +1,18 @@
 import "./Card.css";
 
-export default function Card({ nombre, descripcion, precioOriginal, precioConDescuento, imagen }) {
+export default function Card({ nombre, descripcion, precioOriginal, precioConDescuento, imagen, descuento }) {
   const imageSrc = imagen ? `data:image/jpeg;base64,${imagen}` : null;
 
   const tieneDescuento = precioConDescuento && precioConDescuento < precioOriginal;
 
   return (
     <div className="card border rounded-lg shadow p-4 bg-white">
+      {descuento > 0 && (
+        <div className="card-discount-badge">
+          -{descuento}%
+        </div>
+      )}
+      
       {imageSrc && (
         <img
           src={imageSrc}
@@ -22,8 +28,8 @@ export default function Card({ nombre, descripcion, precioOriginal, precioConDes
       <div className="card-price text-xl font-bold">
         {tieneDescuento ? (
           <>
-            <span className="text-gray-400 line-through mr-2">${precioOriginal}</span>
-            <span className="text-red-500">${precioConDescuento}</span>
+            <span className="original-price">${precioOriginal}</span>
+            <span className="discount-price">${precioConDescuento}</span>
           </>
         ) : (
           <span>${precioOriginal}</span>

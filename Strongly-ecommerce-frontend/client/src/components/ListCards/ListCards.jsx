@@ -25,6 +25,7 @@ export default function ListCards({ productos }) {
       ? prod.price - (prod.price * prod.descuento) / 100
       : prod.price}
               imagen={prod.image}
+              descuento={prod.descuento || 0}
             />
           </Link>
         );
