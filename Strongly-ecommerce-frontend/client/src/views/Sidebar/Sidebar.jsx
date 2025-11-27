@@ -5,7 +5,7 @@ export default function Sidebar({ categories = [], onCategorySelect, onSortChang
   return (
     <aside className="sidebar">
       <h3>Filtrar por</h3>
-      <p>Categorías</p>
+      <h4>Categorías</h4>
 
       <ul>
         {categories.map((cat) => (
@@ -33,7 +33,7 @@ export default function Sidebar({ categories = [], onCategorySelect, onSortChang
           />
           Más barato primero
         </label>
-
+        <br></br>
         <label>
           <input
             type="radio"
