@@ -1,17 +1,16 @@
 .FCard {
   background: linear-gradient(135deg, #08471f 0%, #0a5a28 50%, #0d6e32 100%);
   color: #ffffff;
-  padding: 2rem;
+  padding: 2.5rem;
   border-radius: 20px;
   width: 90vw;
   max-width: 1650px;
   margin: 0 auto;
-  height: 440px;
+  min-height: 400px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
+  gap: 3rem;
   box-shadow: 0 8px 30px rgba(8, 71, 31, 0.4);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border: 3px solid #0a5a28;
@@ -30,6 +29,42 @@
   pointer-events: none;
 }
 
+.FCard-image-container {
+  flex: 0 0 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.15);
+  padding: 2rem;
+  border-radius: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.FCard-image-container img {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  max-height: 350px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: white;
+  padding: 15px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.FCard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+  gap: 1rem;
+}
+
 .FCard:hover {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 15px 45px rgba(8, 71, 31, 0.5);
@@ -37,35 +72,30 @@
 }
 
 .FCard-title {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 800;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   letter-spacing: 1px;
-  position: relative;
-  z-index: 1;
 }
 
 .FCard-description {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 0;
   color: #e8f5e9;
-  max-width: 800px;
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
+  line-height: 1.7;
+  max-width: 600px;
 }
 
 .FCard-price {
   font-weight: 800;
-  font-size: 2rem;
+  font-size: 2.2rem;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.2);
-  padding: 12px 24px;
+  padding: 15px 30px;
   border-radius: 12px;
-  position: relative;
-  z-index: 1;
+  margin-top: 0.5rem;
 }
 
 .FCard-price .text-gray-400 {
@@ -79,4 +109,30 @@
   color: #ffeb3b !important;
   font-weight: 900;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 968px) {
+  .FCard {
+    flex-direction: column;
+    min-height: auto;
+    padding: 2rem;
+  }
+
+  .FCard-image-container {
+    flex: 0 0 auto;
+    width: 100%;
+  }
+
+  .FCard-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .FCard-title {
+    font-size: 2rem;
+  }
+
+  .FCard-description {
+    font-size: 1.1rem;
+  }
 }
