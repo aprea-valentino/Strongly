@@ -1,8 +1,8 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
+import Swal from 'sweetalert2';
 
 import { fetchProducts } from "../../redux/productsSlice";
 import { addToCart } from "../../redux/CartSlice";  
@@ -16,6 +16,7 @@ import "./ProductDetail.css";
 export default function ProductDetail() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
 
   const { items: products, loading, error } = useSelector(
     (state) => state.products
@@ -30,6 +31,20 @@ export default function ProductDetail() {
     }
   }, [dispatch, products.length]);
 
+  const handleQuantityChange = (change) => {
+    const newQuantity = quantity + change;
+    if (newQuantity >= 1 && newQuantity <= product.stock) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 1 && value <= product.stock) {
+      setQuantity(value);
+    }
+  };
+
   const handleAddToCart = () => {
     const role = localStorage.getItem("role");
 
@@ -37,14 +52,16 @@ export default function ProductDetail() {
       toast.error("No podés tener un carrito siendo vendedor");
       return;
     }
-    dispatch(addToCart({ productId: Number(id), quantity: 1 }))
+    dispatch(addToCart({ productId: Number(id), quantity: quantity }))
       .unwrap()
-      .then(() =>     Swal.fire('Éxito', '🛒 Producto agregado al carrito', 'success'))
-      .catch(() =>
-        //toast.error("⚠️ Debes iniciar sesión para agregar productos")
-          console.error(err)
-
-      );
+      .then(() => {
+        Swal.fire('Éxito', `🛒 ${quantity} ${quantity === 1 ? 'producto agregado' : 'productos agregados'} al carrito`, 'success');
+        setQuantity(1); // Reset quantity after adding
+      })
+      .catch((err) => {
+        console.error(err);
+        toast.error("⚠️ Debes iniciar sesión para agregar productos");
+      });
   };
  //toast.success("🛒 Producto agregado al carrito"))
   if (loading) return <p className="loading">Cargando producto...</p>;
@@ -104,6 +121,35 @@ const imageSrc = product.image
           <div className="product-description">
             <h3>Descripción</h3>
             <p>{product.description}</p>
+          </div>
+
+          <div className="quantity-selector">
+            
+            <div className="quantity-controls">
+              <button 
+                className="quantity-btn" 
+                onClick={() => handleQuantityChange(-1)}
+                disabled={quantity <= 1}
+              >
+                -
+              </button>
+              <input 
+                type="number" 
+                className="quantity-input" 
+                value={quantity}
+                onChange={handleInputChange}
+                min="1"
+                max={product.stock}
+              />
+              <button 
+                className="quantity-btn" 
+                onClick={() => handleQuantityChange(1)}
+                disabled={quantity >= product.stock}
+              >
+                +
+              </button>
+            </div>
+            
           </div>
 
           <button 
