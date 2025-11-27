@@ -5,7 +5,7 @@ import cartReducer from "./CartSlice";
 import authReducer from "./authSlice";
 import userReducer from "./userSlice";
 
-//en Reducer van todos los estados globales
+
 
 
 export const store = configureStore({

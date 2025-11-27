@@ -8,7 +8,7 @@
 }
 
 .manage-products-container h1 {
-    color: #08471f; /* Verde oscuro de tu marca */
+    color: #08471f; 
     text-align: center;
     margin-bottom: 10px;
     padding-bottom: 10px;
@@ -26,9 +26,6 @@
     padding: 30px;
 }
 
-/* ------------------------------------------------ */
-/* ESTILOS DE LA LISTA DE PRODUCTOS */
-/* ------------------------------------------------ */
 
 .product-list-wrapper {
     display: flex;
@@ -76,13 +73,11 @@
 
 .product-price {
     font-weight: 700 !important;
-    color: #08471f !important; /* Verde oscuro */
+    color: #08471f !important; 
     font-size: 1.1rem !important;
 }
 
-/* ------------------------------------------------ */
-/* ESTILOS DE BOTONES DE ACCIÓN */
-/* ------------------------------------------------ */
+
 
 .product-actions {
     display: flex;
@@ -99,15 +94,15 @@
     transition: opacity 0.3s;
 }
 
-/* Botón Editar (Color primario de acción: Verde) */
+
 .btn-edit {
-    background-color: #2ecc71; /* Verde de acción */
-    color: #08471f; /* Texto oscuro */
+    background-color: #2ecc71; 
+    color: #08471f; 
 }
 
-/* Botón FCard (Color dorado/amarillo) */
+
 .btn-featured {
-    background-color: #f39c12; /* Amarillo/dorado */
+    background-color: #f39c12; 
     color: white;
     font-weight: 700;
 }
@@ -116,9 +111,9 @@
     background-color: #e67e22;
 }
 
-/* Botón Eliminar (Color de peligro: Rojo) */
+
 .btn-delete {
-    background-color: #e74c3c; /* Rojo de peligro */
+    background-color: #e74c3c; 
     color: white;
 }
 

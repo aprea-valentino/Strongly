@@ -1,10 +1,8 @@
-// src/services/categoryService.js
-
 const API_BASE = import.meta.env.VITE_API_BASE || '/api/v1';
 const API_URL = `${API_BASE}/categories`;
 
 export const categoryService = {
-  // 🔹 Traer todas las categorías
+
   getAllCategories: async () => {
     try {
       const res = await fetch(`${API_URL}`);
@@ -16,11 +14,11 @@ export const categoryService = {
     }
   },
 
-  // 🔹 Traer categoría por ID
+
   getCategoryById: async (categoryId) => {
     try {
       const res = await fetch(`${API_URL}/${categoryId}`);
-      if (res.status === 204) return null; // no content
+      if (res.status === 204) return null;
       if (!res.ok) throw new Error("Error al obtener categoría");
       return await res.json();
     } catch (err) {
@@ -29,11 +27,12 @@ export const categoryService = {
     }
   },
 
-  // 🔹 Traer categorías por parentId
+
+
   getCategoriesByParent: async (parentId) => {
     try {
       const res = await fetch(`${API_URL}/by-parent/${parentId}`);
-      if (res.status === 204) return []; // no content
+      if (res.status === 204) return []; 
       if (!res.ok) throw new Error("Error al obtener categorías por parent");
       return await res.json();
     } catch (err) {
@@ -42,10 +41,8 @@ export const categoryService = {
     }
   },
 
-  // 🔹 Crear categoría
+  
   createCategory: async (categoryData) => {
-
-    
         const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
 

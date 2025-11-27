@@ -53,7 +53,7 @@ export const cartCheckout = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [],        // [{ productId, name, price, qty, ... }]
+    items: [],       
     total: 0,
     loading: false,
     error: null,
@@ -62,7 +62,7 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      //  FETCH CART 
+    
       .addCase(fetchCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -77,7 +77,9 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //  ADD TO CART 
+
+
+
       .addCase(addToCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -92,7 +94,10 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //  UPDATE ITEM 
+
+
+
+
       .addCase(updateCartItem.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -107,7 +112,10 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //  REMOVE ITEM 
+
+
+
+
       .addCase(removeCartItem.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -122,7 +130,10 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //  CLEAR CART 
+
+
+
+
       .addCase(clearUserCart.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -137,7 +148,10 @@ const cartSlice = createSlice({
         state.error = action.error.message;
       })
 
-      //  CHECKOUT 
+
+
+
+      
       .addCase(cartCheckout.pending, (state) => {
         state.loading = true;
         state.error = null;

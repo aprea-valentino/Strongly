@@ -7,10 +7,8 @@ export default function MainLayout() {
   return (
     <>
       <Navbar />
-      {/* El <Outlet /> renderiza el componente de la ruta hija 
-        (Home, Products, etc.) en este punto.
-      */}
-      <div className="content"> {/* Puedes envolverlo con tu clase CSS de contenido principal */}
+
+      <div className="content"> 
         <Outlet /> 
       </div>
       <Footer />

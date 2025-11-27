@@ -1,4 +1,4 @@
-/* Fondo difuminado del modal */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -12,7 +12,7 @@
     z-index: 999;
 }
 
-/* Caja principal del modal */
+
 .modal {
     background: #ffffff;
     width: 450px;
@@ -22,9 +22,9 @@
     animation: fadeIn 0.2s ease-out;
 }
 
-/* Título */
+
 .modal h2 {
-    color: #08471f; /* Verde oscuro de tu marca */
+    color: #08471f; 
     text-align: center;
     margin-bottom: 25px;
     border-bottom: 2px solid #f0f0f0;
@@ -32,7 +32,7 @@
     font-size: 1.4rem;
 }
 
-/* Form groups */
+
 .form-group {
     margin-bottom: 20px;
 }
@@ -44,7 +44,7 @@
     margin-bottom: 8px;
 }
 
-/* Inputs y selects */
+
 .form-group input[type="text"],
 .form-group textarea,
 .form-group select {
@@ -61,7 +61,7 @@
     min-height: 90px;
 }
 
-/* Zona de acciones */
+
 .actions {
     display: flex;
     justify-content: flex-end;
@@ -69,7 +69,7 @@
     gap: 12px;
 }
 
-/* Botón cancelar */
+
 .btn-cancel {
     padding: 10px 18px;
     background-color: #ccc;
@@ -85,11 +85,11 @@
     opacity: 0.85;
 }
 
-/* Botón principal (Crear) */
+
 .btn-primary {
     padding: 10px 18px;
-    background-color: #2ecc71; /* Verde acción, igual al otro componente */
-    color: #08471f; /* Verde oscuro marca */
+    background-color: #2ecc71; 
+    color: #08471f; 
     border: none;
     border-radius: 5px;
     font-weight: 700;
@@ -101,7 +101,7 @@
     background-color: #27ae60;
 }
 
-/* Animación suave de entrada */
+
 @keyframes fadeIn {
     from {
         opacity: 0;

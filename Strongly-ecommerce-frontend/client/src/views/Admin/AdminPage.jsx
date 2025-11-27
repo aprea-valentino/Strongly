@@ -1,18 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; // Importar useNavigate
-import './AdminPage.css'; // Crea un CSS simple para esta vista
+import { useNavigate } from 'react-router-dom'; 
+import './AdminPage.css'; 
 import NuevaCategory from './NuevaCategory';
 import { useState } from 'react';
 
 export default function AdminPage() {
-    const navigate = useNavigate(); // Inicializar el hook
+    const navigate = useNavigate(); 
 
     const handleNavigation = (path) => {
-        // Navega a la ruta hija: /admin/add
         navigate(`/admin/${path}`);
     };
     
-    // Función de ejemplo para las otras acciones
+
     const handleAction = (action) => {
         console.log(`Ejecutando acción: ${action}`);
     };
@@ -42,7 +41,7 @@ export default function AdminPage() {
 
                 <button 
                     className="btn-add"
-                    onClick={() => navigate('/admin/add')}// Redirige a /admin/AddProduct
+                    onClick={() => navigate('/admin/add')}
                 >
                     Agregar Nuevo Producto
                 </button>
@@ -53,7 +52,7 @@ export default function AdminPage() {
                     Modificar / Eliminar Productos
                 </button>
                 
-                {/* NUEVO BOTÓN: Gestionar Descuentos */}
+            
                 <button 
                     className="btn-discount"
                     onClick={() => navigate('/admin/sale')}
@@ -61,13 +60,9 @@ export default function AdminPage() {
                     Gestionar Descuentos
                 </button>
                 
-                {/* Aquí iría un componente para listar y editar productos */}
-                {/* <ProductListForAdmin /> */}
+
             </div>
             
-            {/* El Outlet se usaría aquí si quisiéramos renderizar rutas hijas DENTRO de este componente. 
-                Por ahora, usamos la navegación simple. 
-            */}
         </div>
     );
 }

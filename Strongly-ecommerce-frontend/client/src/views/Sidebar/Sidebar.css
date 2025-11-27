@@ -1,13 +1,10 @@
 .sidebar {
-    /* Ancho fijo para el sidebar, ocupando aproximadamente 1/5 del espacio */
     width: 200px; 
     padding: 15px;
-    
-    /* Fondo limpio para la barra lateral */
     background-color: #f8f8f8; 
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    height: fit-content; /* Para que la caja se ajuste al contenido */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    height: fit-content; 
     text-align: left;
 }
 
@@ -18,16 +15,14 @@
     padding-bottom: 8px;
 }
 
-/* ==================================== */
-/* 3. Estilos de los Grupos de Filtros */
-/* ==================================== */
+
 
 .filter-group {
     margin-bottom: 25px;
 }
 
 .filter-group h4 {
-    color: #333; /* Color de texto estándar */
+    color: #333; 
     margin-bottom: 12px;
     font-size: 1.05rem;
     font-weight: 600;
@@ -39,9 +34,9 @@
     margin: 20px 0;
 }
 
-/* Estilos para las etiquetas y checkboxes/radios */
+
 .filter-group label {
-    display: flex; /* Asegura que el texto y el input estén alineados */
+    display: flex; 
     align-items: center;
     margin-bottom: 10px;
     font-size: 0.95rem;
@@ -52,24 +47,23 @@
 .filter-group input[type="checkbox"],
 .filter-group input[type="radio"] {
     margin-right: 10px;
-    /* Puedes aplicar un estilo personalizado a los colores del checkbox si lo deseas, 
-       pero esto varía según el navegador. */
+
 }
 
 .price-inputs {
-    display: flex; /* Asegura que los inputs estén uno al lado del otro */
+    display: flex; 
     justify-content: flex-start;
     align-items: center;
-    gap: 5px; /* Aumentamos el espacio entre los inputs si es necesario */
+    gap: 5px; 
 }
 
 .price-inputs input {
-    width: 80px; /* Ancho ajustado para que quepan ambos */
+    width: 80px; 
     padding: 5px 8px;
     border: 1px solid #ccc;
-    border-radius: 6px; /* CAMBIO: Bordes redondeados sutiles */
+    border-radius: 6px; 
     font-size: 0.9rem;
-    text-align: left; /* Alineamos el texto dentro del input a la izquierda */
+    text-align: left; 
 }
 
 .price-inputs span {
@@ -77,7 +71,7 @@
     margin-right: 5px;
 }
 
-/* Filtro de rango de precios */
+
 .price-range-filter {
     display: flex;
     flex-direction: column;
@@ -120,7 +114,7 @@
     color: #999;
 }
 
-/* Remove arrows from number input */
+
 .price-input::-webkit-inner-spin-button,
 .price-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -128,7 +122,7 @@
 }
 
 .price-input[type=number] {
-    -moz-appearance: textfield;
+    appearance: textfield;
 }
 
 .clear-price-btn {

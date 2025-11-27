@@ -8,7 +8,7 @@
 }
 
 .add-product-container h1 {
-    color: #08471f; /* Verde oscuro de tu marca */
+    color: #08471f; 
     text-align: center;
     margin-bottom: 30px;
     border-bottom: 2px solid #f0f0f0;
@@ -33,7 +33,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Incluye padding y border en el width */
+    box-sizing: border-box; 
     font-size: 1rem;
 }
 
@@ -46,12 +46,12 @@
     padding: 10px 0;
 }
 
-/* Botón de Guardar */
+
 .btn-submit {
     width: 100%;
     padding: 12px;
-    background-color: #2ecc71; /* Verde de acción */
-    color: #08471f; /* Texto oscuro */
+    background-color: #2ecc71; 
+    color: #08471f; 
     border: none;
     border-radius: 5px;
     font-weight: 700;

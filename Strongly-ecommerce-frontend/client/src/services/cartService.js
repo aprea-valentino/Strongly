@@ -1,10 +1,6 @@
-// src/services/cartService.js
-
 const API_BASE = import.meta.env.VITE_API_BASE || '/api/v1';
 const API_URL = `${API_BASE}/cart`;
 
-
-// 🔹 Obtener carrito del usuario logueado
 
 
 export const getCart = async () => {
@@ -12,7 +8,7 @@ export const getCart = async () => {
 
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
 
-  const res = await fetch(`${API_URL}`, { // asegurate que la ruta sea correcta
+  const res = await fetch(`${API_URL}`, { 
     headers: { 
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}` 
@@ -65,7 +61,8 @@ export const updateCartItem = async (productId, quantity) => {
   return await res.json();
 };
 
-// 🔹 Eliminar un producto del carrito
+
+
 export const removeItemFromCart = async (productId) => {
   const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/items?productId=${productId}`, {
@@ -75,7 +72,8 @@ export const removeItemFromCart = async (productId) => {
   if (!res.ok) throw new Error("Error al eliminar producto del carrito");
 };
 
-// 🔹 Vaciar carrito
+
+
 export const clearCart = async () => {
   const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/clear`, {
@@ -85,7 +83,8 @@ export const clearCart = async () => {
   if (!res.ok) throw new Error("Error al vaciar carrito");
 };
 
-// 🔹 Finalizar compra (checkout)
+
+
 export const checkout = async () => {
   const token = localStorage.getItem("token");
   const res = await fetch(`${API_URL}/checkout`, {

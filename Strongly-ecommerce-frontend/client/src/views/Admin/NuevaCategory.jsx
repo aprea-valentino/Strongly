@@ -13,7 +13,7 @@ const NuevaCategory = ({ onClose }) => {
   const [description, setDescription] = useState("");
   const [parentId, setParentId] = useState(null);
 
-  // 🔹 Cargar categorías para llenar el select
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);

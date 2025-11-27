@@ -17,7 +17,7 @@ export default function Pago({ onClose, items, total }) {
   const [cardCVV, setCardCVV] = useState("");
 
   const handleBuy = async () => {
-    // Validar que todos los campos estén completos
+
     if (!province || !street || !postalCode || !cardNumber || !cardName || !cardExp || !cardCVV) {
       Swal.fire({
         title: 'Datos incompletos',
@@ -28,7 +28,7 @@ export default function Pago({ onClose, items, total }) {
       return;
     }
 
-    // Alerta de confirmación
+
     const result = await Swal.fire({
       title: '¿Confirmar compra?',
       html: `

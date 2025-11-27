@@ -1,6 +1,4 @@
-// src/services/authService.js
-
-const API_URL = "/api/v1/auth"; // ✅ usa el proxy definido en vite.config.js
+const API_URL = "/api/v1/auth"; 
 import jwt_decode from "jwt-decode";
 
 export const login = async (email, password) => {
@@ -11,14 +9,14 @@ export const login = async (email, password) => {
       body: JSON.stringify({ email, password }),
 
     });
-//console.log("res:", res);
+
     if (!res.ok) {
       const errorText = await res.text();
       throw new Error(`Error ${res.status}: ${errorText}`);
     }
 
     const data = await res.json();
-   // console.log("DATA RECIBIDA DEL LOGIN:", data);
+
 
     localStorage.setItem("token", data.access_token); // guarda token JWT
 
@@ -28,7 +26,7 @@ localStorage.setItem("role", decoded.rol);
 localStorage.setItem("id", decoded.id);
 localStorage.setItem("email", decoded.sub); // guarda email (sub es el email en JWT)
 console.log( localStorage.getItem("role")); // "ADMIN" o "BUYER"
-console.log( localStorage.getItem("id")); // "ADMIN" o "BUYER"
+console.log( localStorage.getItem("id")); 
 
       console.log("local storage:",  localStorage.getItem("token"));
 

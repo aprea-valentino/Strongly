@@ -140,7 +140,10 @@ const productsSlice = createSlice({
             state.loading= false,
             state.error=action.error.message
         })
-      // DELETE PRODUCT
+
+
+
+
       .addCase(deleteProduct.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -153,7 +156,11 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // UPDATE DISCOUNT
+
+
+
+
+
       .addCase(updateDiscount.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -169,7 +176,11 @@ const productsSlice = createSlice({
         state.loading = false;
         state.error = action.payload || action.error.message;
       })
-      // FETCH PRODUCT BY ID
+
+
+
+
+      
       .addCase(fetchProductById.pending, (state) => {
         state.loading = true;
         state.error = null;

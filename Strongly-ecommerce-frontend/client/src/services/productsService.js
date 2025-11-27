@@ -1,4 +1,3 @@
-// src/services/productsService.js
 const API_BASE = import.meta.env.VITE_API_BASE || "/api/v1";
 const API_URL = `${API_BASE}/product`;
 
@@ -16,7 +15,7 @@ export const productsService = {
   deleteProduct,
 };
 
-// Obtener todos los productos
+
 async function getAllProducts(searchQuery) {
   try {
     let url = `${API_URL}`;
@@ -35,7 +34,8 @@ async function getAllProducts(searchQuery) {
   }
 }
 
-// Obtener productos por categoría
+
+
 async function getProductsByCategory(categoryId) {
   try {
     const res = await fetch(`${API_URL}/category/${categoryId}`);
@@ -47,7 +47,9 @@ async function getProductsByCategory(categoryId) {
   }
 }
 
-// Obtener producto por ID
+
+
+
 async function getProductById(productId) {
   try {
     const res = await fetch(`${API_URL}/${productId}`);
@@ -79,7 +81,7 @@ async function createProduct(payload, files) {
   const res = await fetch(`${API_URL}/multipart`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${token}`, // NO agregar Content-Type para multipart
+      Authorization: `Bearer ${token}`,
     },
     body: formData,
   });
@@ -92,35 +94,8 @@ async function createProduct(payload, files) {
 }
 
 
-/*
-// Crear producto
-async function createProduct(productData) {
-  const token = localStorage.getItem("token");
-  if (!token) throw new Error("No hay token, el usuario no inició sesión");
 
-  try {
-    const res = await fetch(`${API_URL}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(productData),
-    });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText);
-    }
-
-    return await res.json();
-  } catch (err) {
-    console.error("Error al crear producto:", err);
-    throw err;
-  }
-}
-*/
-// Crear producto con imágenes (multipart)
 async function createProductWithImages(formData) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -146,7 +121,9 @@ async function createProductWithImages(formData) {
   }
 }
 
-// Actualizar precio
+
+
+
 async function updatePrice(idProducto, precio) {
   try {
     const res = await fetch(`${API_URL}/updatePrice`, {
@@ -162,7 +139,10 @@ async function updatePrice(idProducto, precio) {
   }
 }
 
-// Actualizar stock
+
+
+
+
 async function updateStock(idProducto, stock) {
   try {
     const res = await fetch(`${API_URL}/updateStock`, {
@@ -178,7 +158,9 @@ async function updateStock(idProducto, stock) {
   }
 }
 
-// Actualizar producto completo
+
+
+
 async function updateProduct(productId, productData) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -205,7 +187,9 @@ async function updateProduct(productId, productData) {
   }
 }
 
-// Actualizar precio y stock a través del endpoint /updateProduct (backend espera {idProducto, precio, stock})
+
+
+
 async function updatePriceStock(idProducto, precio, stock, name, id_category, descuento) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -236,7 +220,10 @@ async function updatePriceStock(idProducto, precio, stock, name, id_category, de
   }
 }
 
-// Actualizar solo el descuento de un producto
+
+
+
+
 async function updateDiscount(idProducto, descuento) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -268,7 +255,10 @@ async function updateDiscount(idProducto, descuento) {
   }
 }
 
-// Eliminar producto
+
+
+
+
 async function deleteProduct(productId) {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -282,14 +272,12 @@ async function deleteProduct(productId) {
     });
 
     if (!res.ok) {
-      // Intentar leer el mensaje de error del backend
       const contentType = res.headers.get("content-type");
       if (contentType && contentType.includes("application/json")) {
         const errorData = await res.json();
         throw new Error(errorData.error || `Error al eliminar producto: ${res.status}`);
       } else {
         const errorText = await res.text();
-        // Si es un JSON en texto plano, parsearlo
         try {
           const errorJson = JSON.parse(errorText);
           throw new Error(errorJson.error || `Error al eliminar producto: ${res.status}`);

@@ -9,18 +9,18 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
-  overflow-y: auto; /* Permite scroll si el modal es más alto que la pantalla */
-  padding: 20px;    /* Espacio arriba/abajo para que se vea en pantallas pequeñas */
+  overflow-y: auto; 
+  padding: 20px;    
 }
 
 .modal {
   background: #fff;
-  width: 400px;       /* Más chico que antes */
-  max-height: 90vh;   /* No supera el 90% de la pantalla */
+  width: 400px;      
+  max-height: 90vh;  
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  overflow-y: auto;   /* Scroll dentro del modal si el contenido es muy largo */
+  overflow-y: auto;   
   animation: fadeIn 0.2s ease-out;
 }
 

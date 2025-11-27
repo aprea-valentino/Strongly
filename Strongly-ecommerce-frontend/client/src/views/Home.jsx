@@ -11,7 +11,7 @@ export default function Home() {
   const { items: productos, loading: cargando, error } = useSelector((state) => state.products);
 
   useEffect(() => {
-    // Solo cargar productos si no están en el estado
+
     if (productos.length === 0) {
       dispatch(fetchProducts());
     }
@@ -20,7 +20,7 @@ export default function Home() {
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
-  // Producto principal: buscar el destacado o usar el primero
+ 
   const featuredId = localStorage.getItem('featuredProductId');
   let productoPrincipal;
   
@@ -31,7 +31,7 @@ export default function Home() {
   }
   
   productoPrincipal = productoPrincipal || { name: "", description: "", precio: "" };
-  // Productos destacados: el resto
+
   const productosDestacados = productos.slice(1);
 const precio = productoPrincipal.price;
 const descuento =productoPrincipal.descuento;

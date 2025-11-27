@@ -2,7 +2,6 @@ const API_BASE = import.meta.env.VITE_API_BASE || "/api/v1";
 const API_URL = `${API_BASE}/users`;
 
 export const userService = {
-  // 🔹 Obtener un usuario por ID
   getUserById: async (id) => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -24,7 +23,9 @@ export const userService = {
     }
   },
 
-  // 🔹 Listar usuarios (solo admin)
+
+
+
   getAllUsers: async () => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -46,7 +47,9 @@ export const userService = {
     }
   },
 
-  // 🔹 Crear usuario manualmente (desde admin)
+
+
+
   createUser: async (userData) => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No hay token, el usuario no inició sesión");
@@ -73,7 +76,10 @@ export const userService = {
     }
   },
 
-  // 🔹 Soft delete
+
+
+
+  
   deleteUser: async (id) => {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No hay token, el usuario no inició sesión");

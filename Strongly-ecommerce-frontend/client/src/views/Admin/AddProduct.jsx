@@ -14,7 +14,7 @@ const defaultFormData = {
   price: '',
   descuento: '',
   stock: '',
-  categoryId: '', // solo el id
+  categoryId: '', 
   imageFile: null
 };
 
@@ -31,10 +31,10 @@ export default function AddProduct() {
 const { items: categories } = useSelector((state) => state.categories);
 
 useEffect(() => {
-  // Cargar categorías desde Redux (una sola vez)
+
   dispatch(fetchCategories());
 
-  // Si es edición, cargar datos del producto
+
   const cargarProducto = async () => {
     if (!productIdToEdit) return;
 
@@ -49,13 +49,11 @@ useEffect(() => {
 
       setIsEditing(true);
       setFormData({
-        // backend returns `name` (not `title`), use it to prefill the title input
         title: product.name || product.title || "",
         description: product.description || "",
         price: product.price ? parseFloat(product.price) : "",
         descuento: product.descuento ? parseFloat(product.descuento) : "",
         stock: product.stock ? parseInt(product.stock) : "",
-        // ProductResponse may not include category id; leave empty if not provided
         categoryId: product.categoryid ? parseInt(product.categoryid) : (product.categoryId ? parseInt(product.categoryId) : ""),
         imageFile: null
       });
@@ -85,7 +83,6 @@ useEffect(() => {
   setLoading(true);
 
   try {
-    // 1️⃣ Armar el payload del producto
     const productData = {
       name: formData.title,
       description: formData.description,
@@ -97,7 +94,6 @@ useEffect(() => {
       is_active: true
     };
 
-    // 2️⃣ Preparar las imágenes (puede ser 1 archivo o FileList)
     let imageFiles = [];
 
     if (formData.imageFile) {
@@ -110,12 +106,12 @@ useEffect(() => {
 
     console.log({ productData, imageFiles })
 
-    // 3️⃣ Lógica de edición o creación
+
     if (isEditing) {
  await dispatch(updateProduct({ id: parseInt(productIdToEdit), productData  })).unwrap();    
 } else {
 await dispatch(createProduct({ productData, imageFiles })).unwrap();
-//await productsService.createProduct(productData, imageFiles)
+
     }
 
     navigate("/admin/manage");
@@ -127,49 +123,9 @@ await dispatch(createProduct({ productData, imageFiles })).unwrap();
   }
 };
 
-/*
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
 
-    try {
 
-      const payload = {
-  name: formData.title,
-  description: formData.description,
-  price: parseFloat(formData.price),
-  stock: parseInt(formData.stock),
-  id_category: parseInt(formData.categoryId),
-  id_user:   parseInt(localStorage.getItem("id")),        // 🔹 reemplazar con el ID real del usuario logueado
-  is_active: true    // opcional, si querés crear el producto activo por defecto
-};
 
-      console.log(payload)
-
-      if (isEditing) {
-        // backend provides a combined update endpoint: /product/updateProduct (accepts idProducto, precio, stock, optionally name and id_category)
-        await productsService.updatePriceStock(
-          parseInt(productIdToEdit),
-          payload.price,
-          payload.stock,
-          payload.name,
-          payload.id_category
-        );
-        console.log('Producto editado correctamente');
-      } else {
-        await productsService.createProduct(payload);
-        console.log('Producto creado correctamente');
-      }
-
-      navigate('/admin/manage');
-    } catch (err) {
-      console.error('Error al guardar producto:', err);
-      Swal.fire('Error', err.message, 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-*/
   if (loading) return <p>Cargando...</p>;
 
   return (

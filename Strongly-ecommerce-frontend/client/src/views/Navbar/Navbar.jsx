@@ -27,7 +27,7 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    logoutUser(); // Usa logoutUser del AuthContext
+    logoutUser(); 
     navigate("/home");
   };
 
@@ -35,12 +35,12 @@ export default function Navbar() {
     <nav className="navbar">
       <div className="navbar-container">
 
-        {/* LOGO */}
+     
         <Link to="/home" className="navbar-logo-link">
           <h1 className="navbar-logo">STRONGLY</h1>
         </Link>
 
-        {/* BUSCADOR */}
+    
         <form className="search-bar" onSubmit={handleSearch}>
           <input
             type="text"
@@ -53,7 +53,7 @@ export default function Navbar() {
           </button>
         </form>
 
-        {/* MENU */}
+
         <ul className="navbar-menu">
           <li><Link to="/products">Productos</Link></li>
           <li><Link to="/offers">Ofertas</Link></li>

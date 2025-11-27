@@ -1,11 +1,10 @@
-/* Estilos básicos para el panel de administración */
 .admin-dashboard {
     padding: 40px;
     text-align: center;
 }
 
 .admin-dashboard h1 {
-    color: #08471f; /* Color de tu marca */
+    color: #08471f; 
     margin-bottom: 20px;
 }
 

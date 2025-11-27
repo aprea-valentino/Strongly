@@ -22,14 +22,13 @@ export default function App() {
 
  <Routes>
 
-      {/* 1. RUTA PÚBLICA SIN LAYOUT (Register/Login) */}
+
       <Route path="/register" element={<Register />} /> 
 
-      {/* 2. RUTA PADRE ÚNICA CON LAYOUT (MainLayout) */}
-      {/* TODAS las rutas que deben tener Navbar y Footer deben ir aquí ADENTRO. */}
+
       <Route element={<MainLayout />}>
         
-        {/* Rutas Estándar (Ahora son hijas del MainLayout) */}
+
         <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
         <Route path="/products" element={<Products />} />
@@ -37,7 +36,7 @@ export default function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart/>} />
         
-        {/*RUTAS ADMIN*/}
+
         <Route path="/admin" element={<AdminRoute element={AdminPage} />} />
                 <Route path="/admin/addCategorie"element={<AdminRoute element={AddCategorie} />}/>
 

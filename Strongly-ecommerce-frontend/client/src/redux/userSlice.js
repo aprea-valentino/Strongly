@@ -57,7 +57,9 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // GET BY ID
+
+
+
       .addCase(fetchUserById.pending, (state) => {
         state.loading = true;
       })
@@ -70,7 +72,10 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      // GET ALL
+
+
+
+
       .addCase(fetchAllUsers.pending, (state) => {
         state.loading = true;
       })
@@ -83,7 +88,10 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      // CREATE
+
+
+
+
       .addCase(createUserThunk.pending, (state) => {
         state.loading = true;
       })
@@ -96,7 +104,8 @@ const userSlice = createSlice({
         state.error = action.payload;
       })
 
-      // DELETE
+
+      
       .addCase(deleteUserThunk.fulfilled, (state, action) => {
         state.list = state.list.filter((u) => u.id !== action.payload);
       });

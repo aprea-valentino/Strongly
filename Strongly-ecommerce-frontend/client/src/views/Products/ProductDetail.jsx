@@ -25,7 +25,6 @@ export default function ProductDetail() {
   const product = products.find((p) => p.id === Number(id));
 
   useEffect(() => {
-    // Cargar productos solo si no están cargados
     if (products.length === 0) {
       dispatch(fetchProducts());
     }
@@ -56,14 +55,14 @@ export default function ProductDetail() {
       .unwrap()
       .then(() => {
         Swal.fire('Éxito', `🛒 ${quantity} ${quantity === 1 ? 'producto agregado' : 'productos agregados'} al carrito`, 'success');
-        setQuantity(1); // Reset quantity after adding
+        setQuantity(1); 
       })
       .catch((err) => {
         console.error(err);
         toast.error("⚠️ Debes iniciar sesión para agregar productos");
       });
   };
- //toast.success("🛒 Producto agregado al carrito"))
+
   if (loading) return <p className="loading">Cargando producto...</p>;
   if (error) return <p className="errorrrr">{error}</p>;
   if (!product) return <p className="empty">No se encontró el producto.</p>;
@@ -74,7 +73,7 @@ const imageSrc = product.image
   return (
     <div className="product-detail-container">
       <div className="product-detail-wrapper">
-        {/* Columna Izquierda - Imagen */}
+
         <div className="product-image-section">
           {product.image ? (
             <img
@@ -87,7 +86,7 @@ const imageSrc = product.image
           )}
         </div>
 
-        {/* Columna Derecha - Información */}
+
         <div className="product-info-section">
           <div className="product-category">
             <span className="category-badge">Producto Premium</span>

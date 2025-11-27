@@ -14,7 +14,6 @@ const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Traemos estado global de Redux
   const { loading, error } = useSelector((state) => state.auth);
 
   const handleLogin = (e) => {
@@ -23,11 +22,11 @@ const Register = () => {
     dispatch(loginUser({ email, password }))
       .unwrap()
       .then(() => {
-        console.log("🔐 LOGIN OK");
+        console.log(" LOGIN OK");
         navigate("/home");
       })
       .catch(() => {
-        console.error("❌ Error en login");
+        console.error(" Error en login");
       });
   };
 
@@ -50,11 +49,11 @@ const Register = () => {
     dispatch(registerUser(userData))
       .unwrap()
       .then(() => {
-        console.log("📝 REGISTRO OK");
+        console.log("REGISTRO OK");
         navigate("/home");
       })
       .catch(() => {
-        console.error("❌ Error en registro");
+        console.error("Error en registro");
       });
   };
 
@@ -62,7 +61,7 @@ const Register = () => {
     <div className="register-page-container">
       <div className="forms-wrapper">
 
-        {/* FORMULARIO DE REGISTRO */}
+
         <div className="form-box register-form-box">
           <h2>Registro</h2>
           <form onSubmit={handleRegister}>
@@ -114,7 +113,7 @@ const Register = () => {
           </form>
         </div>
 
-        {/* FORMULARIO DE LOGIN */}
+
         <div className="form-box login-form-box">
           <h2>Login</h2>
           <form onSubmit={handleLogin}>

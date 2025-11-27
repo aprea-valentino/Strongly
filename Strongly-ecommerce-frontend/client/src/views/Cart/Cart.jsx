@@ -33,9 +33,7 @@ export default function Cart() {
     dispatch(clearUserCart());
   };
 
- /* const handleCheckout = () => {
-    dispatch(cartCheckout());
-  };*/
+
 const [showPayment, setShowPayment] = useState(false);
 
 const handleCheckout = () => {
