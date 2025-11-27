@@ -36,8 +36,17 @@ export default function Home() {
   if (cargando) return <p>Cargando productos...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
-  // Producto principal: el primero de la lista
-  const productoPrincipal = productos[0] || { name: "", description: "", precio: "" };
+  // Producto principal: buscar el destacado o usar el primero
+  const featuredId = localStorage.getItem('featuredProductId');
+  let productoPrincipal;
+  
+  if (featuredId) {
+    productoPrincipal = productos.find(p => p.id === parseInt(featuredId)) || productos[0];
+  } else {
+    productoPrincipal = productos[0];
+  }
+  
+  productoPrincipal = productoPrincipal || { name: "", description: "", precio: "" };
   // Productos destacados: el resto
   const productosDestacados = productos.slice(1);
 const precio = productoPrincipal.price;

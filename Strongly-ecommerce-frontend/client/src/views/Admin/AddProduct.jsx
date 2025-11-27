@@ -192,10 +192,12 @@ await dispatch(createProduct({ productData, imageFiles })).unwrap();
           <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} min="0" step="0.01" required />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="descuento">Descuento (%):</label>
-          <input    type="number"    id="descuento"    name="descuento"    value={formData.descuento || 0}    onChange={handleChange}    min="0"    max="100"    step="0.01"  />
-        </div>
+        {!isEditing && (
+          <div className="form-group">
+            <label htmlFor="descuento">Descuento (%):</label>
+            <input    type="number"    id="descuento"    name="descuento"    value={formData.descuento || 0}    onChange={handleChange}    min="0"    max="100"    step="0.01"  />
+          </div>
+        )}
 
         <div className="form-group">
           <label htmlFor="stock">Stock:</label>

@@ -104,6 +104,17 @@
     color: #08471f; /* Texto oscuro */
 }
 
+/* Botón FCard (Color dorado/amarillo) */
+.btn-featured {
+    background-color: #f39c12; /* Amarillo/dorado */
+    color: white;
+    font-weight: 700;
+}
+
+.btn-featured:hover {
+    background-color: #e67e22;
+}
+
 /* Botón Eliminar (Color de peligro: Rojo) */
 .btn-delete {
     background-color: #e74c3c; /* Rojo de peligro */

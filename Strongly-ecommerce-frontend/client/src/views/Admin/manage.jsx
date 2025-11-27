@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import './manage.css';
 import { useNavigate } from 'react-router-dom';
 import { productsService } from "../../services/productsService"; 
@@ -7,7 +8,16 @@ export default function Manage() {
   const [products, setProducts] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(null);
+  const [featuredProductId, setFeaturedProductId] = useState(null);
   const navigate = useNavigate();
+
+  // 🔹 Cargar el ID del producto destacado desde localStorage
+  useEffect(() => {
+    const savedFeaturedId = localStorage.getItem('featuredProductId');
+    if (savedFeaturedId) {
+      setFeaturedProductId(parseInt(savedFeaturedId));
+    }
+  }, []);
 
   // 🔹 Cargar productos reales al montar el componente
   useEffect(() => {
@@ -45,6 +55,17 @@ export default function Manage() {
 
   const handleEdit = (id) => {
     navigate(`/admin/add?edit=${id}`);
+  };
+
+  const handleSetFeatured = (id) => {
+    localStorage.setItem('featuredProductId', id.toString());
+    setFeaturedProductId(id);
+    Swal.fire({
+      title: '¡Producto destacado!',
+      text: `El producto ahora se mostrará en la tarjeta principal de la Home.`,
+      icon: 'success',
+      confirmButtonColor: '#08471f'
+    });
   };
 
   return (
@@ -86,6 +107,13 @@ export default function Manage() {
                       onClick={() => handleEdit(product.id)}
                     >
                       Editar producto
+                    </button>
+                    <button
+                      className="btn-featured"
+                      onClick={() => handleSetFeatured(product.id)}
+                      title="Marcar como producto destacado en la Home"
+                    >
+                      ⭐ FCard
                     </button>
                     <button
                       className="btn-delete"

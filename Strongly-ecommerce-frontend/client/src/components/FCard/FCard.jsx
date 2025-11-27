@@ -8,20 +8,28 @@ export default function FeaturedCard({ nombre, descripcion, precioOriginal, prec
   return (
     <div className="FCard border rounded-lg shadow p-4 bg-white">
       {imageSrc && (
-        <img
-          src={imageSrc}
-          alt={nombre}
-          className="FCard-img rounded-md mb-3"
-          style={{ 
-            width: "100%", 
-            maxWidth: "400px",
-            height: "250px", 
-            objectFit: "cover",
-            borderRadius: "12px",
-            boxShadow: "0 4px 15px rgba(0,0,0,0.3)",
-            border: "3px solid rgba(255,255,255,0.3)"
-          }}
-        />
+        <div style={{
+          background: 'rgba(255,255,255,0.15)',
+          padding: '20px',
+          borderRadius: '16px',
+          marginBottom: '20px'
+        }}>
+          <img
+            src={imageSrc}
+            alt={nombre}
+            className="FCard-img rounded-md mb-3"
+            style={{ 
+              width: "100%", 
+              maxWidth: "500px",
+              height: "300px", 
+              objectFit: "contain",
+              borderRadius: "12px",
+              boxShadow: "0 6px 20px rgba(0,0,0,0.4)",
+              background: 'white',
+              padding: '10px'
+            }}
+          />
+        </div>
       )}
 
       <h3 className="FCard-title font-semibold text-lg mb-2">{nombre}</h3>
