@@ -47,17 +47,38 @@ export default function Manage() {
     cargarProductos();
   }, []);
 
-  // 🔹 Eliminar producto (futuro: implementar DELETE real)
-  const handleDelete = async (id) => {
-    if (window.confirm(`¿Estás seguro de que quieres eliminar el producto ID ${id}?`)) {
+  // 🔹 Eliminar producto
+  const handleDelete = async (id, name) => {
+    const result = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar el producto "${name}"? Esta acción no se puede deshacer.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#e74c3c',
+      cancelButtonColor: '#6c757d',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (result.isConfirmed) {
       try {
-        // 👉 Cuando tengas endpoint DELETE, llamalo acá:
-        // await productsService.deleteProduct(id);
+        await productsService.deleteProduct(id);
         setProducts((prev) => prev.filter((p) => p.id !== id));
-        alert(`Producto ID ${id} eliminado (simulación).`);
+        Swal.fire({
+          title: '¡Eliminado!',
+          text: 'El producto ha sido eliminado correctamente.',
+          icon: 'success',
+          confirmButtonColor: '#08471f'
+        });
       } catch (err) {
-        alert('Error al eliminar el producto.');
         console.error(err);
+        const errorMessage = err.message || 'No se pudo eliminar el producto.';
+        Swal.fire({
+          title: 'Error',
+          text: errorMessage,
+          icon: 'error',
+          confirmButtonColor: '#08471f'
+        });
       }
     }
   };
@@ -126,7 +147,7 @@ export default function Manage() {
                     </button>
                     <button
                       className="btn-delete"
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product.id, product.name)}
                     >
                       Eliminar
                     </button>

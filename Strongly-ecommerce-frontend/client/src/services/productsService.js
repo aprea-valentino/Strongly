@@ -13,6 +13,7 @@ export const productsService = {
   updateProduct,
   updatePriceStock,
   updateDiscount,
+  deleteProduct,
 };
 
 // Obtener todos los productos
@@ -263,6 +264,44 @@ async function updateDiscount(idProducto, descuento) {
     return await res.json();
   } catch (err) {
     console.error("Error al actualizar descuento:", err);
+    throw err;
+  }
+}
+
+// Eliminar producto
+async function deleteProduct(productId) {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No hay token, el usuario no inició sesión");
+
+  try {
+    const res = await fetch(`${API_URL}/${productId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      // Intentar leer el mensaje de error del backend
+      const contentType = res.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || `Error al eliminar producto: ${res.status}`);
+      } else {
+        const errorText = await res.text();
+        // Si es un JSON en texto plano, parsearlo
+        try {
+          const errorJson = JSON.parse(errorText);
+          throw new Error(errorJson.error || `Error al eliminar producto: ${res.status}`);
+        } catch {
+          throw new Error(errorText || `Error al eliminar producto: ${res.status}`);
+        }
+      }
+    }
+
+    return true;
+  } catch (err) {
+    console.error("Error al eliminar producto:", err);
     throw err;
   }
 }

@@ -36,6 +36,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 // PreAuthorize removed from updateProduct; Security rules configured in SecurityConfig
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,6 +61,9 @@ public class ProductController {
 
     @Autowired
     private com.uade.tpo.demo.repository.ProductRepository productRepository;
+
+    @Autowired
+    private com.uade.tpo.demo.repository.CartItemRepository cartItemRepository;
 
 
             @GetMapping
@@ -185,7 +190,38 @@ public ResponseEntity<?> createProduct(
     return ResponseEntity.ok(response);
 }
 
-
+@DeleteMapping("/{productId}")
+@Transactional
+public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
+    try {
+        Optional<Product> product = productRepository.findById(productId);
+        if (product.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Product prod = product.get();
+        
+        // Verificar si el producto está en alguna orden
+        if (prod.getOrderItems() != null && !prod.getOrderItems().isEmpty()) {
+            return ResponseEntity.badRequest()
+                .body("{\"error\": \"No se puede eliminar el producto porque está en órdenes existentes\"}");
+        }
+        
+        // Eliminar todos los items del carrito que referencian este producto
+        if (prod.getCartItems() != null) {
+            for (com.uade.tpo.demo.entity.CartItem cartItem : prod.getCartItems()) {
+                cartItemRepository.delete(cartItem);
+            }
+        }
+        
+        // Ahora eliminar el producto (las imágenes se eliminan automáticamente con orphanRemoval)
+        productRepository.deleteById(productId);
+        return ResponseEntity.noContent().build();
+    } catch (Exception e) {
+        return ResponseEntity.internalServerError()
+            .body("{\"error\": \"Error al eliminar el producto: " + e.getMessage() + "\"}");
+    }
+}
 
 }
 
