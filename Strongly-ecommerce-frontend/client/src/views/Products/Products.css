@@ -1,27 +1,31 @@
 .products-page-container {
-    display: flex; /* Usamos Flexbox para el layout de dos columnas */
-    /*max-width: 1200px; /* Limita el ancho del contenedor principal */
-    margin-top: 20px ; /* Centra el contenido */
-    gap: 30px; /* Espacio entre el sidebar y el contenido */
-    padding: 0 20px; /* Padding a los lados */
+    display: flex;
+    margin-top: 20px;
+    gap: 30px;
+    padding: 0 20px;
     justify-content: flex-start;
+    background-color: #f8f9fa;
+    min-height: calc(100vh - 200px);
 }
 
 /* 1. ESTILO DE LA BARRA LATERAL */
 .sidebar {
-    width: 250px; /* Ancho fijo para el sidebar */
-    padding: 20px;
-    background-color: #f8f8f8; /* Fondo blanco/gris muy claro */
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    height: fit-content; /* Para que el fondo no se extienda hasta abajo */
+    width: 250px;
+    padding: 24px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    height: fit-content;
+    border: 1px solid #e8e8e8;
 }
 
 .sidebar h3 {
-    color: #08471f; /* Color del logo para el título */
+    color: #08471f;
     margin-bottom: 20px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    border-bottom: 2px solid #08471f;
+    padding-bottom: 12px;
+    font-size: 1.3rem;
+    font-weight: 700;
 }
 
 .filter-group {
@@ -42,11 +46,20 @@
 
 /* 2. ESTILO DEL CONTENIDO PRINCIPAL */
 .products-main-content {
-    flex-grow: 1; /* Ocupa el resto del espacio disponible */
+    flex-grow: 1;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e8e8e8;
 }
 
 .products-main-content h2 {
     color: #08471f;
-    margin-bottom: 20px;
-    text-align: left;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #08471f;
 }
