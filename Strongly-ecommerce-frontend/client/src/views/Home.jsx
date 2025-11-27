@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ListCards from "../components/ListCards/ListCards";
 import FeaturedCard from "../components/FCard/FCard";
 import "../App.css";
@@ -55,17 +56,22 @@ const descuento =productoPrincipal.descuento;
     <div className="home">
       <div className="content">
         <h2>Equipa tu entrenamiento</h2>
-        <FeaturedCard
-          nombre={`${productoPrincipal.name}`}
-          descripcion={`${productoPrincipal.description}`}
-           precioOriginal={precio}
-          precioConDescuento={
-          descuento && descuento > 0
-            ? precio - (precio * descuento) / 100
-            : precio
-        }
-          imagen={`${productoPrincipal.image}`}
-        />
+        <Link 
+          to={`/product/${productoPrincipal.id}`}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <FeaturedCard
+            nombre={`${productoPrincipal.name}`}
+            descripcion={`${productoPrincipal.description}`}
+            precioOriginal={precio}
+            precioConDescuento={
+            descuento && descuento > 0
+              ? precio - (precio * descuento) / 100
+              : precio
+          }
+            imagen={`${productoPrincipal.image}`}
+          />
+        </Link>
       </div>
 
       <div className="content">
