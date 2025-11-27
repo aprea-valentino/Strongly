@@ -91,16 +91,17 @@
 }
 
 .product-price-original {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #999;
-    text-decoration: line-through;
+    font-size: 1.8rem !important;
+    font-weight: 600 !important;
+    color: #999 !important;
+    text-decoration: line-through !important;
 }
 
 .product-price {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: #08471f;
+    font-size: 3.5rem !important;
+    font-weight: 800 !important;
+    color: #08471f !important;
+    line-height: 1.1 !important;
 }
 
 .discount-badge {

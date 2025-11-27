@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import './manage.css';
 import { useNavigate } from 'react-router-dom';
-import { productsService } from "../../services/productsService"; 
+import { productsService } from "../../services/productsService";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "../../redux/CategoriesSlice";
 
 export default function Manage() {
   const [products, setProducts] = useState([]);
@@ -10,6 +12,8 @@ export default function Manage() {
   const [error, setError] = useState(null);
   const [featuredProductId, setFeaturedProductId] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { items: categories } = useSelector((state) => state.categories);
 
   // 🔹 Cargar el ID del producto destacado desde localStorage
   useEffect(() => {
@@ -18,6 +22,11 @@ export default function Manage() {
       setFeaturedProductId(parseInt(savedFeaturedId));
     }
   }, []);
+
+  // 🔹 Cargar categorías
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
 
   // 🔹 Cargar productos reales al montar el componente
   useEffect(() => {
@@ -90,7 +99,7 @@ export default function Manage() {
                   <div className="product-details">
                     <span className="product-name">{product.name}</span>
                     <span className="product-category">
-                      Categoría: {product.categoryName || 'Sin categoría'}
+                      Categoría: {categories.find(c => c.id === product.categoryid)?.name || 'Sin categoría'}
                     </span>
                     <span className="product-stock">Stock: {product.stock}</span>
                   </div>
@@ -113,7 +122,7 @@ export default function Manage() {
                       onClick={() => handleSetFeatured(product.id)}
                       title="Marcar como producto destacado en la Home"
                     >
-                      ⭐ FCard
+                      ⭐ Inicio
                     </button>
                     <button
                       className="btn-delete"
