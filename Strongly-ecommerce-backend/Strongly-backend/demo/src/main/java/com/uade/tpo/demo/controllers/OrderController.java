@@ -1,7 +1,5 @@
 package com.uade.tpo.demo.controllers;
 
-import java.util.stream.Collectors;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -11,7 +9,6 @@ import com.uade.tpo.demo.entity.dto.OrderSummaryResponse;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
 import com.uade.tpo.demo.service.OrderService;
 import com.uade.tpo.demo.service.CartService;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController

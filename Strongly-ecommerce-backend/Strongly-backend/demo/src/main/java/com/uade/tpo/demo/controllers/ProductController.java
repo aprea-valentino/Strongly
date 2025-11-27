@@ -1,41 +1,25 @@
 package com.uade.tpo.demo.controllers;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.uade.tpo.demo.entity.Product;
 import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
 import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
-
-import com.uade.tpo.demo.entity.dto.ProductResponseSimple;
-import com.uade.tpo.demo.entity.dto.UpdateProductPrice;
 import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
-import com.uade.tpo.demo.entity.dto.UpdateProductStock;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
 import com.uade.tpo.demo.exceptions.ProductDuplicateException;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
 import com.uade.tpo.demo.service.ProductService;
-
 import jakarta.validation.Valid;
-
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import org.springframework.data.domain.Pageable;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-// PreAuthorize removed from updateProduct; Security rules configured in SecurityConfig
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,12 +36,6 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private com.uade.tpo.demo.repository.CategoryRepository categoryRepository;
-
-    @Autowired
-    private com.uade.tpo.demo.repository.UserRepository userRepository;
 
     @Autowired
     private com.uade.tpo.demo.repository.ProductRepository productRepository;
@@ -118,7 +96,7 @@ public List<ProductResponseCategory> getAllProducts(
     }
 
 
-//NUEVO UPDATE PRODUCT PRICE Y STOCK
+
 @PostMapping("/updateProduct")
 public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductRequest req)
     throws ProductNotFoundException, CategoryNotFoundException {
@@ -128,23 +106,6 @@ public ResponseEntity<ProductResponse> updateProduct(@RequestBody UpdateProductR
 }
 
 
-    /* 
-@PostMapping("/updatePrice")
-public ResponseEntity<ProductResponse> updatePrice(@RequestBody UpdateProductPrice req) 
-        throws ProductNotFoundException {
-
-    ProductResponse result = productService.updatePrice(req.getIdProducto(), req.getPrecio());
-    return ResponseEntity.ok(result);
-}
-
-@PostMapping("/updateStock")
-public ResponseEntity<ProductResponse> updateStock(@RequestBody UpdateProductStock req) 
-        throws ProductNotFoundException {
-
-    ProductResponse result = productService.updateStock(req.getIdProducto(), req.getStock());
-    return ResponseEntity.ok(result);
-}
- */
 
    @GetMapping("/{productId}")
 public ResponseEntity<ProductResponse> getProductById(@PathVariable Long productId) {
@@ -207,7 +168,7 @@ public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
                 .body("{\"error\": \"No se puede eliminar el producto porque está en órdenes existentes\"}");
         }
         
-        // Eliminar todos los items del carrito que referencian este producto
+        
         if (prod.getCartItems() != null) {
             for (com.uade.tpo.demo.entity.CartItem cartItem : prod.getCartItems()) {
                 cartItemRepository.delete(cartItem);

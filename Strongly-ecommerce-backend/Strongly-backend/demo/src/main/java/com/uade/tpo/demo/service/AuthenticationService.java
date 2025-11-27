@@ -1,9 +1,7 @@
 package com.uade.tpo.demo.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.uade.tpo.demo.repository.CartRepository;
@@ -14,7 +12,6 @@ import com.uade.tpo.demo.controllers.config.JwtService;
 import com.uade.tpo.demo.entity.Cart;
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service

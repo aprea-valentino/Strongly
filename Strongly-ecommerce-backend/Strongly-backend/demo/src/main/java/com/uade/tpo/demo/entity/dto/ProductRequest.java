@@ -1,10 +1,8 @@
 package com.uade.tpo.demo.entity.dto;
 
 import java.math.BigDecimal;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
@@ -16,7 +14,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true) // ignora campos extra del JSON
 public class ProductRequest {
 
-    // Si este DTO es para CREAR, no mandes 'id' desde el cliente
     private Long id;
 
     @NotBlank
@@ -25,11 +22,11 @@ public class ProductRequest {
     private String description;
  
     @NotNull
-    @JsonProperty("id_user")       // <-- acepta "id_user" en JSON
-    private Long id_User;          // (dejé tu nombre para no tocar controller)
+    @JsonProperty("id_user")       
+    private Long id_User;          
 
     @NotNull
-    @JsonProperty("id_category")   // <-- acepta "id_category" en JSON
+    @JsonProperty("id_category")  
     private Long id_category;
 
     @NotNull
@@ -46,7 +43,5 @@ public class ProductRequest {
     @DecimalMin("0.0")
     @DecimalMax("100.0")
     private BigDecimal descuento;
-    // Eliminé el constructor que recibía Product:
-    // mezclaba responsabilidades de request/response.
-    // Si lo necesitás para devolver data, hacé un ProductResponse aparte.
+    
 }

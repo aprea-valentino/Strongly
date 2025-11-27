@@ -1,7 +1,6 @@
 package com.uade.tpo.demo.entity.dto;
 
 import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Data;

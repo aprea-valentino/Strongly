@@ -1,7 +1,6 @@
 package com.uade.tpo.demo.controllers.auth;
 
 import com.uade.tpo.demo.entity.enums.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

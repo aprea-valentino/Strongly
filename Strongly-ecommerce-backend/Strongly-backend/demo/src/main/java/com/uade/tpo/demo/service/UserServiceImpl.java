@@ -2,11 +2,9 @@ package com.uade.tpo.demo.service;
 
 import java.time.Instant;
 import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.uade.tpo.demo.entity.Cart;
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.entity.enums.Role;
@@ -22,12 +20,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CartRepository cartRepository;
-    //private final PasswordEncoder passwordEncoder; // ver bean más abajo
+    
 
     @Override
     @Transactional
     public User createUser(String fullName, String email, String rawPassword) {
-        // Validación básica
+        
         userRepository.findByEmailAndIsActiveTrue(email).ifPresent(u -> {
             throw new IllegalArgumentException("Email ya en uso");
         });
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService {
         User u = new User();
         u.setFullName(fullName);
         u.setEmail(email);
-        u.setPasswordHash(rawPassword   ); // TODO hashear con passwordEncoder
+        u.setPasswordHash(rawPassword   ); 
         u.setRole(Role.BUYER);            // por defecto
         u.setIsActive(true);
         u.setCreatedAt(Instant.now());
@@ -73,9 +71,9 @@ public class UserServiceImpl implements UserService {
         User u = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
 
-        if (!Boolean.TRUE.equals(u.getIsActive())) return; // ya inactivo
+        if (!Boolean.TRUE.equals(u.getIsActive())) return;
 
-        // Soft delete: se marca inactivo (nota: email sigue siendo único)
+        
         u.setIsActive(false);
         userRepository.save(u);
 

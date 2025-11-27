@@ -3,10 +3,8 @@ package com.uade.tpo.demo.entity;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uade.tpo.demo.entity.enums.OrderStatus;
-
 import jakarta.persistence.*;
 import lombok.Data;
 

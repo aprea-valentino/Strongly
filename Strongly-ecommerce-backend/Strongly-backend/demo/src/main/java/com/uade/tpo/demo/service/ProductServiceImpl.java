@@ -35,21 +35,6 @@ public class ProductServiceImpl implements ProductService {
     private UserRepository userRepository;
 
 
-    // --------------------- GET PRODUCTS ---------------------
-  /*
-    @Override
-    public Page<ProductResponseCategory> getProduct(Pageable pageable) {
-        return productRepository.findAll(pageable).map(p -> new ProductResponseCategory(
-                p.getId(),
-                p.getName(),
-                p.getDescription(),
-                p.getPrice(),
-                p.getStock(),
-            p.getCategory() != null ? p.getCategory().getId() : null
-
-            ));
-    }
-*/
 
 @Override
 public Page<ProductResponseCategory> getProduct(Pageable pageable) {
@@ -124,7 +109,7 @@ public Optional<ProductResponse> getProductById(Long productId) {
             .toList();
         }
 
-    // --------------------- CREATE ---------------------
+    
  @Override
 public ProductResponse createProduct(
         String name,
@@ -184,69 +169,30 @@ public ProductResponse createProduct(
 
 
 
-    // --------------------- UPDATE ---------------------
-    /* ESTE ES EL UPDATE DE PRICE Y STOCK SEPARADOS
 
-    @Override
-    public ProductResponse updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Producto " + productId + " no encontrado"));
-
-        product.setPrice(newPrice);
-        Product updated = productRepository.save(product);
-
-        return new ProductResponse(
-            updated.getId(),
-            updated.getName(),
-            updated.getDescription(),
-            updated.getPrice(),
-            updated.getStock()
-        );
-    }
-
-    @Override
-    public ProductResponse updateStock(Long productId, int newStock) throws ProductNotFoundException {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Producto " + productId + " no encontrado"));
-
-        product.setStock(newStock);
-        Product updated = productRepository.save(product);
-
-        return new ProductResponse(
-            updated.getId(),
-            updated.getName(),
-            updated.getDescription(),
-            updated.getPrice(),
-            updated.getStock()
-        );
-    }
-}
-*/
-
-// ESTE ES EL UPDATE QUE UNE PRICE Y STOCK EN UN SOLO MÉTODO
     @Override
     public ProductResponse updateProduct(UpdateProductRequest req) throws ProductNotFoundException {
 
         Product product = productRepository.findById(req.getIdProducto())
                 .orElseThrow(() -> new ProductNotFoundException("Producto " + req.getIdProducto() + " no encontrado"));
 
-        // Si viene precio lo actualiza
+        
         if (req.getPrecio() != null) {
             product.setPrice(BigDecimal.valueOf(req.getPrecio()));
         }
 
-        // Si viene stock lo actualiza
+        
         if (req.getStock() != null) {
             product.setStock(req.getStock());
         }
 
-        // Si viene nombre lo actualiza (y actualiza slug)
+       
         if (req.getName() != null && !req.getName().trim().isEmpty()) {
             product.setName(req.getName());
             product.setSlug(req.getName().trim().toLowerCase().replace(" ", "-"));
         }
 
-        // Si viene id_category lo actualiza
+        
         if (req.getId_category() != null) {
             Category category = categoryRepository.findById(req.getId_category())
                     .orElseThrow(() -> new CategoryNotFoundException("La categoria " + req.getId_category() + " no existe"));
@@ -310,29 +256,3 @@ public List<ProductResponseCategory> searchProductsByName(String nameQuery) {
 
 }
 
-
-/* 
-    public List<ProductRequest> getProductsByCategory(Long categoryId) throws CategoryNotFoundException {
-        
-        Category categoria = categoryRepository.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("La categoria" + categoryId +" no existe"));
-        List<Product> productos = productRepository.findProductByCategory(categoria);
-        return productos;
-
-    }    
-
-    public ProductRequest updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException {
-         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> new ProductNotFoundException("Producto " + productId + " no encontrado"));
-    product.setPrice(newPrice);
-    return productRepository.save(product);
-    }
-
-    
-    public ProductRequest updateStock(Long productId, int newStock) throws ProductNotFoundException {
-         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Producto " + productId + " no encontrado"));
-        product.setStock(newStock);
-        return productRepository.save(product);
-    }
- */
-   

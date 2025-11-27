@@ -1,7 +1,6 @@
 package com.uade.tpo.demo.service;
 
 import java.util.List;
-
 import com.uade.tpo.demo.entity.Order;
 
 public interface OrderService {

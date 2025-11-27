@@ -3,20 +3,15 @@ package com.uade.tpo.demo.entity;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import com.uade.tpo.demo.entity.enums.Role;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
@@ -75,19 +70,16 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
-    // Si no tienes lógica de expiración de cuenta, devuelve true.
     return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-    // Si no tienes lógica de bloqueo de cuenta, devuelve true.
     return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-    // Si no tienes lógica de expiración de credenciales (contraseña), devuelve true.
     return true;
     }
 

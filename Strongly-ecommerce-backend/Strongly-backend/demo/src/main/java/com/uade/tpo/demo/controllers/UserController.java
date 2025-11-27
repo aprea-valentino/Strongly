@@ -1,14 +1,11 @@
 package com.uade.tpo.demo.controllers;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.entity.dto.UserRequest;
 import com.uade.tpo.demo.service.UserService;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Data;

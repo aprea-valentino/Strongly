@@ -3,11 +3,8 @@ package com.uade.tpo.demo.service;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
-import com.uade.tpo.demo.entity.dto.ProductRequest;
 import com.uade.tpo.demo.entity.dto.ProductResponse;
 import com.uade.tpo.demo.entity.dto.UpdateProductRequest;
 import com.uade.tpo.demo.exceptions.CategoryNotFoundException;
@@ -17,7 +14,7 @@ import com.uade.tpo.demo.entity.dto.ProductResponseCategory;
 
 public interface ProductService {
 
-    // Cambié PageRequest por Pageable y ProductRequest por ProductResponse
+    
     Page<ProductResponseCategory> getProduct(Pageable pageable);
 
     Optional<ProductResponse> getProductById(Long productId);
@@ -27,12 +24,7 @@ public interface ProductService {
     ProductResponse createProduct(String name, String description, int stock, BigDecimal price, long category_id, long id_user, List<byte[]> imagesBytes,List<String> imagesContentTypes, BigDecimal descuento)
             throws ProductDuplicateException, CategoryNotFoundException;
 
-    /* ESTOS DOS PASAN A SER PARTE DE updateProduct
-    ProductResponse updatePrice(Long productId, BigDecimal newPrice) throws ProductNotFoundException;
-
-    ProductResponse updateStock(Long productId, int newStock) throws ProductNotFoundException;
-    */
-
+    
     ProductResponse updateProduct(UpdateProductRequest request) throws ProductNotFoundException, CategoryNotFoundException;
     List<ProductResponseCategory> searchProductsByName(String nameQuery);
 

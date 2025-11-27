@@ -2,10 +2,8 @@ package com.uade.tpo.demo.service;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.uade.tpo.demo.entity.*;
 import com.uade.tpo.demo.entity.enums.OrderStatus;
 import com.uade.tpo.demo.exceptions.*;
@@ -23,8 +21,7 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepo;
     private final OrderRepository orderRepo;
     private final OrderItemRepository orderItemRepo;
-    private final CartService cartService;
-
+    
     @Override @Transactional
     public Order checkout(Long userId) {
         Cart cart = cartRepo.findByUserId(userId);
@@ -75,8 +72,6 @@ public class OrderServiceImpl implements OrderService {
 
         // Limpiar carrito
         cartItemRepo.deleteAll(items);
-
-        // (Opcional) crear Shipment vacío aquí
 
         return order;
     }

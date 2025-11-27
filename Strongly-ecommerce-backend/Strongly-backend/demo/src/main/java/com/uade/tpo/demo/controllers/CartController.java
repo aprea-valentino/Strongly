@@ -2,18 +2,14 @@ package com.uade.tpo.demo.controllers;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import java.security.Principal;
-
 import com.uade.tpo.demo.entity.User;
 import com.uade.tpo.demo.entity.dto.AddItemRequest;
 import com.uade.tpo.demo.entity.dto.CartResponse;
-import com.uade.tpo.demo.entity.dto.CartItemResponse;
 import com.uade.tpo.demo.entity.dto.CheckoutResponse;
 import com.uade.tpo.demo.exceptions.ProductNotFoundException;
 import com.uade.tpo.demo.repository.UserRepository;
 import com.uade.tpo.demo.service.CartService;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
