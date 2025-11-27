@@ -98,13 +98,22 @@ public CartResponse addItem(Long userId, Long productId, int qty) {
     var product = productRepo.findById(productId)
             .orElseThrow(() -> new RuntimeException("El producto con id " + productId + " no existe"));
 
+    // Calcular precio con descuento
+    final BigDecimal finalPrice;
+    if (product.getDescuento() != null && product.getDescuento().compareTo(BigDecimal.ZERO) > 0) {
+        BigDecimal discount = product.getDescuento().divide(BigDecimal.valueOf(100));
+        finalPrice = product.getPrice().subtract(product.getPrice().multiply(discount));
+    } else {
+        finalPrice = product.getPrice();
+    }
+
     CartItem item = itemRepo.findByCartIdAndProductId(cart.getId(), productId)
             .orElseGet(() -> {
                 CartItem ci = new CartItem();
                 ci.setCart(cart);
                 ci.setProduct(product);
                 ci.setQuantity(0);
-                ci.setUnitPrice(product.getPrice());
+                ci.setUnitPrice(finalPrice);
                 ci.setSubtotal(BigDecimal.ZERO);
                 return ci;
             });
@@ -116,8 +125,8 @@ public CartResponse addItem(Long userId, Long productId, int qty) {
     throw new RuntimeException("No hay suficiente stock. Disponible: " + product.getStock());
     }
     item.setQuantity(newQty);
-    item.setUnitPrice(product.getPrice());
-    item.setSubtotal(product.getPrice().multiply(BigDecimal.valueOf(newQty)));
+    item.setUnitPrice(finalPrice);
+    item.setSubtotal(finalPrice.multiply(BigDecimal.valueOf(newQty)));
 
     itemRepo.save(item);
 
@@ -138,7 +147,7 @@ public CartResponse updateItemQty(Long userId, Long productId, int qty) {
     CartItem item = itemRepo.findByCartIdAndProductId(cart.getId(), productId)
             .orElseThrow(() -> new RuntimeException("El item no existe en el carrito"));
 
-    var product = item.getProduct(); // <-- agregar esta línea
+    var product = item.getProduct();
 
     if (qty == 0) {
         itemRepo.delete(item);
@@ -146,9 +155,19 @@ public CartResponse updateItemQty(Long userId, Long productId, int qty) {
         if (qty > product.getStock()) {
             throw new RuntimeException("No hay suficiente stock. Disponible: " + product.getStock());
         }
+        
+        // Calcular precio con descuento
+        final BigDecimal finalPrice;
+        if (product.getDescuento() != null && product.getDescuento().compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal discount = product.getDescuento().divide(BigDecimal.valueOf(100));
+            finalPrice = product.getPrice().subtract(product.getPrice().multiply(discount));
+        } else {
+            finalPrice = product.getPrice();
+        }
+        
         item.setQuantity(qty);
-        item.setUnitPrice(product.getPrice());
-        item.setSubtotal(product.getPrice().multiply(BigDecimal.valueOf(qty)));
+        item.setUnitPrice(finalPrice);
+        item.setSubtotal(finalPrice.multiply(BigDecimal.valueOf(qty)));
         itemRepo.save(item);
     }
 
