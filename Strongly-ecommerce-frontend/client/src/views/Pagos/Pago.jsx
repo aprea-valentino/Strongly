@@ -77,7 +77,6 @@ export default function Pago({ onClose, items, total }) {
   };
 
   const handleCancel = () => {
-    dispatch(clearUserCart());
     onClose();
   };
 
