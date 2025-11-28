@@ -8,7 +8,7 @@ import { store } from "./redux/store"; //importar el store de redux
  
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  
     <Provider store ={store}>
     <AuthProvider>
       <BrowserRouter>
@@ -16,5 +16,5 @@ createRoot(document.getElementById("root")).render(
       </BrowserRouter>
     </AuthProvider>
     </Provider>
-  </StrictMode>
+  
 );
