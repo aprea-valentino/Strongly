@@ -1,30 +1,19 @@
 
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser as loginUserThunk, logout } from "../redux/authSlice";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) setUser({ token });
-  }, []);
-
-  const loginUser = (data) => {
-    setUser({ token: data.token });
-    // El email, role, id ya están guardados en localStorage por authService.js
-  };
-
-  const logoutUser = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    localStorage.removeItem("id");
-    setUser(null);
-  };
+  const loginUser = (credentials) => dispatch(loginUserThunk(credentials));
+  const logoutUser = () => dispatch(logout());
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser }}>
+    <AuthContext.Provider value={{ user: auth.user, token: auth.token, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );
