@@ -2,19 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { login, register, logout as logoutService } from "../services/authService";
 import jwt_decode from "jwt-decode";
 
-// token inicial desde localStorage (persistencia)
-const storedToken = localStorage.getItem("token");
-
-let initialUser = null;
-if (storedToken) {
-  const decoded = jwt_decode(storedToken);
-  initialUser = {
-    id: decoded.id,
-    email: decoded.sub,
-    role: decoded.rol,
-  };
-}
-
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, thunkAPI) => {
@@ -33,8 +20,8 @@ export const registerUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    token: storedToken || null,
-    user: initialUser,
+    token: null,
+    user: null,
     loading: false,
     error: null,
   },
@@ -65,12 +52,6 @@ const authSlice = createSlice({
           email: decoded.sub,
           role: decoded.rol,
         };
-
-        // persistencia
-        localStorage.setItem("token", token);
-        localStorage.setItem("id", decoded.id);
-        localStorage.setItem("email", decoded.sub);
-        localStorage.setItem("role", decoded.rol);
       })
 
       .addCase(loginUser.rejected, (state, action) => {
@@ -97,11 +78,6 @@ const authSlice = createSlice({
           email: decoded.sub,
           role: decoded.rol,
         };
-
-        localStorage.setItem("token", token);
-        localStorage.setItem("id", decoded.id);
-        localStorage.setItem("email", decoded.sub);
-        localStorage.setItem("role", decoded.rol);
       })
 
       .addCase(registerUser.rejected, (state, action) => {
