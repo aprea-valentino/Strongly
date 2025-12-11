@@ -18,23 +18,15 @@ if (storedToken) {
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async ({ email, password }, thunkAPI) => {
-    try {
       const data = await login(email, password);
       return data;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
-    }
   }
 );
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, thunkAPI) => {
-    try {
       return await register(userData);
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.message);
-    }
   }
 );
 

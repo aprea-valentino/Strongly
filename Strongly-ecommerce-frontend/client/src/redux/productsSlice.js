@@ -20,30 +20,15 @@ export const fetchProductsbyCategorie = createAsyncThunk(
 export const createProduct = createAsyncThunk(
   "/products",
   async ({ productData, imageFiles }, { rejectWithValue }) => {
-    try {
-
       const data = await productsService.createProduct(productData,imageFiles);
       return data;
-    } catch (err) {
-      return rejectWithValue(err.message || "Error al crear producto");
-    }
   }
 );
-/*
-export const updateProduct = createAsyncThunk(
-  "products/updateProduct",
-  async (updatedProduct) => {
-    const { id, precio} = updatedProduct;
-    const newPrice = precio;
-    const data = await productsService.updatePrice(id, newPrice);
-    return data;
-  }
-);*/
+
 
 export const updateProduct = createAsyncThunk(
   "products/updateProduct",
   async ({ id, productData }, { rejectWithValue }) => {
-    try {
       const updated = await productsService.updatePriceStock( parseInt(id),
        productData.price,
         productData.stock,
@@ -51,45 +36,30 @@ export const updateProduct = createAsyncThunk(
           productData.id_category,
            productData.descuento );
       return updated;
-    } catch (err) {
-      return rejectWithValue(err.message || "Error al actualizar producto");
-    }
   }
 );
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
   async (productId, { rejectWithValue }) => {
-    try {
       await productsService.deleteProduct(productId);
       return productId;
-    } catch (err) {
-      return rejectWithValue(err.message || "Error al eliminar producto");
-    }
   }
 );
 
 export const updateDiscount = createAsyncThunk(
   "products/updateDiscount",
   async ({ productId, discount }, { rejectWithValue }) => {
-    try {
       const updated = await productsService.updateDiscount(productId, discount);
       return updated;
-    } catch (err) {
-      return rejectWithValue(err.message || "Error al actualizar descuento");
-    }
   }
 );
 
 export const fetchProductById = createAsyncThunk(
   "products/fetchProductById",
   async (productId, { rejectWithValue }) => {
-    try {
       const product = await productsService.getProductById(productId);
       return product;
-    } catch (err) {
-      return rejectWithValue(err.message || "Error al obtener producto");
-    }
   }
 );
 
